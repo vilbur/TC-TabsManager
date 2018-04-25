@@ -113,11 +113,19 @@ Class Gui Extends AddControls
 	_bindGuiEvents()
 	{
 		this._gui.Events.Gui
-				.onClose("exit")
+				;.onClose("exit")
+				.onClose( &this ".TestEvent")		
 				
 		;this._gui.Events.Gui
 		;		.onExit( &this ".saveWindowPosition")
-	} 
+	}
+	/**
+	 */
+	TestEvent($Event, $params*)
+	{
+		MsgBox,262144,, Gui.TestEvent(),2
+		ExitApp
+	}
 	/**
 	 */
 	_bindControlEvents()
@@ -132,8 +140,8 @@ Class Gui Extends AddControls
 	{
 		this._gui.Events.Window
 		    ;.on("focus",	&this "._guiFocus")
-		    .on("focus",	&this "._guiFocus")			
-		    .on("sizedmoved",	&this ".saveWindowPosition")
+		    .on("focus",	&this "._guiFocused")			
+		    ;.on("sizedmoved",	&this ".saveWindowPosition")
 	} 
 	/**
 	 */
@@ -155,12 +163,6 @@ Class Gui Extends AddControls
 		;	,"replace":	$Controls.get("R_replace").value()
 		;	,"folder":	$Controls.get("LB_FoldersList").value()			
 		;	,"tabfile":	$Controls.get("LB_Tabfile").value()}
-	}
-	/**
-	 */
-	TestEvent($Event, $params*)
-	{
-		MsgBox,262144,, Test,2 
 	}
 	/**
 	 */

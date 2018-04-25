@@ -20,6 +20,10 @@ Class EventBind_vgui
 	_call($event, $event_data:="")
 	{
 		$EventObj := this._getEventObject($event, $event_data)
+		
+		;if( $event=="onClose" )
+			;$EventObj.message()
+		;MsgBox,262144,event, %$event%,3 
 	
 		return % this.events[$event].call($EventObj)
 	}

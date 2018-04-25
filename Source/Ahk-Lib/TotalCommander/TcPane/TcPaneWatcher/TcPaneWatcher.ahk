@@ -1,5 +1,5 @@
 #SingleInstance force
-#NoTrayIcon
+;#NoTrayIcon
 
 #Include %A_LineFile%\..\..\..\TcActivate\TcActivate.ahk 
 
@@ -111,6 +111,10 @@ Class TcPaneWatcher
 	} 
 	
 }
+/*---------------------------------------
+	CALLBACK
+-----------------------------------------
+*/
 
 /** On Total Commander Get\Lost focus
  */
@@ -134,6 +138,12 @@ onWindowChange(wParam, lParam)
 	if( $win_class=="TTOTAL_CMD" )
 		$last_win := lParam		
 }
+
+/*---------------------------------------
+	REGISTER COM OBJECT
+-----------------------------------------
+*/
+
 /*
     ObjRegisterActive(Object, CLSID, Flags:=0)
     

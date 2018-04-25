@@ -47,10 +47,9 @@ Class AddControls Extends GuiControl
 			.GroupBox( "Window Options" )
 				.options( "y-12 h16" )
 				.add("GB_WinOptions")
-			
 
 			.Checkbox("On Top")
-				.options( "x-4 y-8 w64" )
+				.options( "x-2 y-8 w64" )
 				.checked( this._getOption("on_top") )
 				.callback( &this "._setOption", "on_top" )
 				.add("CBX_option_onTop")
@@ -66,7 +65,7 @@ Class AddControls Extends GuiControl
 				
 			.Dropdown( "Active||left|right" )
 				.checked( this._getOption("active_pane") )
-				.options( "x-4 y-8 w64" )
+				.options( "x-2 y-8 w64" )
 				.callback( &this "._setOption", "active_pane" )
 				.add("DD_option_activePane")
 				

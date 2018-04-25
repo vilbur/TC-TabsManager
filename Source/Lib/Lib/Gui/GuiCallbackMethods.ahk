@@ -227,9 +227,12 @@ Class GuiCallbackMethods Extends Parent
 	*/
 	/**
 	 */
-	_guiFocus()
+	_guiFocused()
 	{
-		;MsgBox,262144,_TEXT_update, FOCUS,3
+		;MsgBox,262144,, _guiFocused,3
+		;sleep, 500
+		;winGetTitle, $title, A
+		;MsgBox,262144,title, %$title%,1
 		;MsgBox,262144,_TEXT_update, % this.TotalCmd().activePane(),3		
 		this._TEXT_update()
 	}  

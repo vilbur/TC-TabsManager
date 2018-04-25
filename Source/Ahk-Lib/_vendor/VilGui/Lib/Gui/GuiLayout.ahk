@@ -46,13 +46,13 @@ Class GuiLayout_vgui extends GuiSize_vgui
 	*/
 	_scrollbar($toggle:=true)
 	{
-		;MsgBox,262144,_isScrollbarNeeded(), % this._isScrollbarNeeded(),2 
+		;MsgBox,262144,, % "isScrollbarNeeded: " this._isScrollbarNeeded(),2 
 		
 		if($toggle && this._isScrollbarNeeded())
-			UpdateScrollBars(this._name, $width, this._getGuiSize().h )
+			UpdateScrollBars(this._name, 0, this._getGuiSize().h )
 			
 		else
-			Gui, % this._gui("-0x200000")
+			Gui, % this._gui("-0x200000")			
 			
 		return this
 	}
@@ -81,7 +81,14 @@ Class GuiLayout_vgui extends GuiSize_vgui
 	{
 		return % this.Controls._Layout.ContainerMain.Bbox[$xy]
 	}
-
+	/** _getControlsBboxSize with margin
+	*/
+	_getControlsBboxSizeWithMargin($xy)
+	{
+		$margin := $xy=="x" ? $_GUI_margin.ui.x() : $_GUI_margin.ui.y()
+		
+		return % this.Controls._Layout.ContainerMain.Bbox[$xy] + $margin
+	}
 	/** Set max gui height by Active monitor height
 	*/
 	_setMaxHeightByMonitor()

@@ -80,8 +80,8 @@ Class GuiControl Extends GuiCallback
 			$LB := this._getControl($lisbox)
 			if( $LB.GetCount() )
 				break
-		}	
-		
+		}
+		$LB.focus()
 	}
 	/**
 	 */

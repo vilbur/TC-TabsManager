@@ -35,13 +35,12 @@ Class GuiSize_vgui extends GuiPosition_vgui
 		
 		;this._fixSizeOnAutosize()
 		
-		;;;;this._margin($_GUI_margin.ui.x(), $_GUI_margin.ui.y())
 		this.show("AutoSize")
 		
 		;this._restoreSizeOnAutosize()
 		
-		;this._correctMarginOfGui()	; // BUG: sometimes makes gui huge, marging need review
-		;this._scrollbar()	; // BUG: sometimes shows scrollbar event it is not need, probably related to _correctMarginOfGui()	
+		this._correctMarginOfGui()	; // BUG: sometimes makes gui huge, marging need review
+		this._scrollbar()	; // BUG: sometimes shows scrollbar event it is not need, probably related to _correctMarginOfGui()	
 		
 		$size	:= this._getGuiSize()
 		this._sizes.auto 	:= {"w": $size.w,	"h": $size.h}
@@ -112,8 +111,10 @@ Class GuiSize_vgui extends GuiPosition_vgui
 		PRIVATE METHODS
 	-----------------------------------------
 	*/
-	/** Get real size of window with menus and borders
-	*/
+	/** Get clinet size of window with menus and borders
+	 *  Or get bounding box of control, if gui does not exist yet
+	 *  
+	 */
 	_getGuiSize( $hwnd:="" )
 	{
 		if( ! $hwnd )
@@ -127,9 +128,10 @@ Class GuiSize_vgui extends GuiPosition_vgui
 			return {"w":NumGet(rc, 8, "int"), "h":NumGet(rc, 12, "int")}
 		}
 		else
-			return {"w":this._getControlsBboxSize("x"), "h":this._getControlsBboxSize("y")}
+			return {"w":this._getControlsBboxSizeWithMargin("x"), "h":this._getControlsBboxSizeWithMargin("y")}
 		
 	}
+	
 	/** Set relative or absolute size of gui
 		@param "w|h"	$wh	width or height
 		@param int|string	$value	absolute or relative size of gui E.G: ABSOLUTE: 1024 | RELATIVE: -128 or "+128"
@@ -176,36 +178,36 @@ Class GuiSize_vgui extends GuiPosition_vgui
 		;this.resizeable( this._resizable )
 	}
 
-	;/** Set size of guu as max size and backup this.sizes
-	;  *
-	;  * It allows autosize Gui only in one dimension
-	; */
-	;_fixSizeOnAutosize()
-	;{
-	;	if( ! this._sizes.size.w && ! this._sizes.size.h )
-	;		return
-	;
-	;	this._sizes_autosize_bak := this._objectClone(this._sizes)
-	;
-	;	this.minSize(this._sizes.size.w, this._sizes.size.h)
-	;	this.maxSize(this._sizes.size.w, this._sizes.size.h)		
-	;}
-	;/** restore backuped this._sizes
-	; */
-	;_restoreSizeOnAutosize()
-	;{
-	;	if( ! this._sizes_autosize_bak )
-	;		return
-	;	
-	;	this._sizes := this._objectClone(this._sizes_autosize_bak)
-	;
-	;	this.options("-MaxSize")
-	;
-	;	this.delete("_sizes_autosize_bak")
-	;
-	;	this.minSize(this._sizes.min.w, this._sizes.min.h)
-	;	this.maxSize(this._sizes.max.w, this._sizes.max.h)		
-	;} 
+	/** Set size of guu as max size and backup this.sizes
+	  *
+	  * It allows autosize Gui only in one dimension
+	 */
+	_fixSizeOnAutosize()
+	{
+		if( ! this._sizes.size.w && ! this._sizes.size.h )
+			return
+	
+		this._sizes_autosize_bak := this._objectClone(this._sizes)
+	
+		this.minSize(this._sizes.size.w, this._sizes.size.h)
+		this.maxSize(this._sizes.size.w, this._sizes.size.h)		
+	}
+	/** restore backuped this._sizes
+	 */
+	_restoreSizeOnAutosize()
+	{
+		if( ! this._sizes_autosize_bak )
+			return
+		
+		this._sizes := this._objectClone(this._sizes_autosize_bak)
+	
+		this.options("-MaxSize")
+	
+		this.delete("_sizes_autosize_bak")
+	
+		this.minSize(this._sizes.min.w, this._sizes.min.h)
+		this.maxSize(this._sizes.max.w, this._sizes.max.h)		
+	} 
 	/* Fully clone object
 	*/
 	_objectClone($obj)

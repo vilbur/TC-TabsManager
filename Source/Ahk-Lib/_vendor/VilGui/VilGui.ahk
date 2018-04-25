@@ -50,7 +50,8 @@ Class VilGUI extends Gui_vgui
 		
 		this._setHwnd()
 		
-		this.autosize()
+		;this.autosize()
+		this._scrollbar()
 	
 		this._applyInitOptions()
 
@@ -58,6 +59,8 @@ Class VilGUI extends Gui_vgui
 		
 		WinSet Redraw,, % this.ahkId()
 
+		this.Events.Window._setOnSizedMovedMessage()
+		
 		return this
 	}
 	/**
@@ -65,10 +68,10 @@ Class VilGUI extends Gui_vgui
 	_applyInitOptions()
 	{
 		if( this._fixed_width )
-			this.fixedWidth(this._fixed_width)		
-				
-		;if( this._center.window )
-		;	this.center("window")
+			this.fixedWidth(this._fixed_width)
+			
+		if( this._center.window )
+			this.center("window")
 	}  
 
 	/*---------------------------------------
@@ -79,12 +82,15 @@ Class VilGUI extends Gui_vgui
 	 */
 	_getPositionOptions()
 	{
-		$size_without_controls := ! this.Controls._Control ? "w128 h24 " : " " ; absolute minimum size to display gui without controls
+		$size_without_controls := ! this.Controls._Control ? "w256 h24 " : " " ; absolute minimum size to display gui without controls
 		
+		/* Get window position if centered to window
+		*  Size of window is precomputed by bounding box of controls
+		*/
 		if( this._center.window )
 		{
 			$center_position := this._getCenterToWindowPositions()
-			;Dump($center_position, "center_position", 1)
+
 			this._position.x	:= $center_position.x
 			this._position.y	:= $center_position.y			
 		}
@@ -95,14 +101,23 @@ Class VilGUI extends Gui_vgui
 			,h:	this._sizes.size.h
 			,xCenter:	this._center.x
 			,yCenter:	this._center.y}
-		;Dump($options, "options", 1)
 		
+		this._setDefaultSize($options)
+			
 		$options_string := this._joinOptions( this._removeCenterIfPositionDefined( $options ) )
-		
-		;MsgBox,262144,options_string, %$options_string%,3 
-		
+
 		return % $size_without_controls " " $options_string 			
 	}
+	
+	/** Set default size, simulate autosize, because autosize causes flickering
+	 */
+	_setDefaultSize( ByRef $options )
+	{
+		if( ! $options.w && this.Controls._Control)
+			$options.w := this._getControlsBboxSizeWithMargin("x")
+		if( ! $options.h && this.Controls._Control)
+			$options.h := this._getControlsBboxSizeWithMargin("y")	
+	} 
 	
 	/**
 	 */
@@ -111,7 +126,7 @@ Class VilGUI extends Gui_vgui
 		For $i, $xy in ["x", "y"]
 			if( $options[$xy] )
 				$options.delete($xy "Center")
-		;Dump($options, "options", 1)
+
 		return $options
 	}
 	/**
