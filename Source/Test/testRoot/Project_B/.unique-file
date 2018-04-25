@@ -1,0 +1,15 @@
+#SingleInstance force
+
+#Include %A_LineFile%\..\..\TabsManager.ahk
+
+
+$test_path := "c:\GoogleDrive\TotalComander\_TC-commands\tabs\TabsManager\Test\TestRoot\Project_A"
+;$test_path := "GoogleDrive"
+
+$TabsManager := new TabsManager($test_path)
+
+$TabsManager.createNewSet()
+
+
+		
+		
