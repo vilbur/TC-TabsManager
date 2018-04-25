@@ -45,7 +45,7 @@ Class Gui Extends AddControls
 		
 		this._LB_focusOnInit()
 		
-		sleep, 200 ; wait then TcPaneWatcher is initialized, it handles win onTop state
+		sleep, 300 ; wait then TcPaneWatcher is initialized, it handles win onTop state
 		if( this._getOption("on_top") )
 			this._gui.alwaysOnTop()
 			
@@ -113,9 +113,8 @@ Class Gui Extends AddControls
 	_bindGuiEvents()
 	{
 		this._gui.Events.Gui
-		;		.onClose("exit")
-				.onExit( &this ".TestEvent")						
-		;		
+				.onClose("exit")
+				
 		;this._gui.Events.Gui
 		;		.onExit( &this ".saveWindowPosition")
 	} 

@@ -3,10 +3,7 @@
  */
 Class AddControls Extends GuiControl
 {
-	/*---------------------------------------
-		TABS
-	-----------------------------------------
-	*/
+
 	static _LB_WIDTH := " w164 "
 	
 	static _LB_HEIGHT	:= " h164 "
@@ -38,23 +35,22 @@ Class AddControls Extends GuiControl
 				.callback( &this "._DD_Changed", "tabSet" ) 
 				.add("DD_tabset")
 	}
+	/*---------------------------------------
+		OPTIONS
+	-----------------------------------------
+	*/
 	/**
 	 */
 	_addOptions()
 	{
 		this._gui.controls
-			.GroupBox( "Options" )
-				;.layout($layout)
-				.options( "y-12" )
-				.add("GB_Options")
+			.GroupBox( "Window Options" )
+				.options( "y-12 h16" )
+				.add("GB_WinOptions")
 			
-			.Checkbox("Title")
-				.options( "y-8 w48" )
-				.checked( this._getOption("title") )
-				.callback( &this "._setOption", "title" )
-				.add("CBX_option_title")
+
 			.Checkbox("On Top")
-				.options( "x-4 w64" )
+				.options( "x-4 y-8 w64" )
 				.checked( this._getOption("on_top") )
 				.callback( &this "._setOption", "on_top" )
 				.add("CBX_option_onTop")
@@ -64,13 +60,32 @@ Class AddControls Extends GuiControl
 				.callback( &this "._setOption", "center_window" )
 				.add("CBX_option_CenterWindow")
 				
+			.GroupBox( "Loading" )
+				;.options( "" )
+				.add("GB_Loading")
+				
 			.Dropdown( "Active||left|right" )
 				.checked( this._getOption("active_pane") )
-				.options( "x-4 w64" )
+				.options( "x-4 y-8 w64" )
 				.callback( &this "._setOption", "active_pane" )
 				.add("DD_option_activePane")
 				
+			.Checkbox("Title")
+				.options( "w48" )
+				.checked( this._getOption("title") )
+				.callback( &this "._setOption", "title" )
+				.add("CBX_option_title")
+				
+			.Checkbox("Exit")
+				.options( "w48" )
+				.checked( this._getOption("exit_onload") )
+				.callback( &this "._setOption", "exit_onload" )
+				.add("CBX_exit_onload")	
 	}
+	/*---------------------------------------
+		TABS
+	-----------------------------------------
+	*/
 	/**
 	 */
 	_addTabs()
@@ -122,9 +137,6 @@ Class AddControls Extends GuiControl
 			this._addDropdown("TabsetRoot", "Add|Remove", "x-92 y-24")
 		.section()
 	}
-	
-
-
 	/*---------------------------------------
 		TABSGROUP
 	-----------------------------------------

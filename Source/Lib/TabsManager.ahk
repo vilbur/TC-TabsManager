@@ -98,6 +98,10 @@ Class TabsManager Extends Accessors
 		
 		if( this._Gui._getOption("title") )
 			this._TotalCmd._setWindowTitleByTabs($data)
+			
+		if( this._Gui._getOption("exit_onload") )
+			ExitApp
+		
 	}
 	
 	/** open *.tab file
