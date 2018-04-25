@@ -18,7 +18,7 @@ Class Tabsets Extends Parent
 	}
 	/**
 	 */
-	isAnyTabsetExists()
+	tabsetsExists()
 	{
 		return % this._Tabsets.GetCapacity() != 0
 	}

@@ -32,8 +32,8 @@ Class TabsManager Extends Accessors
 	*/	
 	createGui()
 	{
-		if( ! this._Tabsets.isAnyTabsetExists())
-			 new Example().parent(this).createExample()
+		if( ! this._Tabsets.tabsetsExists())
+			new Example().parent(this).createExample()
 
 		this._Gui.createGui()
 	}

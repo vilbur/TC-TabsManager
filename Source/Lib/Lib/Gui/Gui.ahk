@@ -103,7 +103,6 @@ Class Gui Extends AddControls
 		this._gui.Events.Key
 				.onEscape("exit")
 				.onEnter( this._Parent ".loadTabs")
-				;.on( "space", this "._TEST")				
 				.on( "number", &this "._TAB_SelectByNumber")
 				.on( "space", &this "._LB_FoldersAndTabfile", "LB_Folder")
 				.on( ["control", "space"], &this "._LB_ToggleRootsAndTabset", "LB_Folder")

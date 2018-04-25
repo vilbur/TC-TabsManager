@@ -3,7 +3,8 @@
 Class Install
 {
 	
-	createCommands(){
+	createCommands()
+	{
 		new TcCommand()
 			.name("Open")
 			.prefix("TabsManager")

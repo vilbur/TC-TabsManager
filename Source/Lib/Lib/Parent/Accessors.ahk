@@ -7,8 +7,11 @@ Class Accessors
 	 */
 	Tabsets()
 	{
-		;MsgBox,262144,, _Tabsets,2 
-		return % this.Parent()._Tabsets
+		;MsgBox,262144,,Accessors.Tabsets(),2
+		;$Parent := this.Parent()
+		;Dump($Parent, "Parent", 0)
+		;return % $Parent._Tabsets
+		return % this.Parent()._Tabsets		
 	}
 	/**
 	 */

@@ -96,8 +96,11 @@ Class AddControls Extends GuiControl
 		this._tab := {"index":	$tab_index, "name": $tab_name}
 		
 		this._addTargetRoot()
-		this._addTabsGroupSection()				
+		
+		this._tabControls().layout("row")
+
 		this._addFoldersSection()
+		this._addTabsGroupSection()				
 		this._addTabfileSection()
 	}
 	/*---------------------------------------
@@ -134,7 +137,6 @@ Class AddControls Extends GuiControl
 		$Tabset	:= this.Tabset(this._tab.name)
 		$tabsgroup_last	:= $Tabset.getLast("tabsgroup")
 		
-		this._tabControls().layout("row")
 				
 		this._GroupBox("TabsGroup" )
 			this._addDropdown("TabsGroup")
