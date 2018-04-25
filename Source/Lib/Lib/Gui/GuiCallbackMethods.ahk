@@ -56,19 +56,30 @@ Class GuiCallbackMethods Extends Parent
 	*/
 	/**
 	 */
-	_tabsetRootAdd( $data )
+	_tabsetRootAdd( $Event, $data )
 	{
 		this.Tabset( $data.tabset )
 			.createTabsRoot( this._askPathToRoot() )
 	} 
 	/**
 	 */
-	_tabsetRootRemove( $data )
+	_tabsetRootRemove( $Event, $data )
 	{
 		if( this._MsgBox.confirm("REMOVE ROOT", "Remove root ?`n`n" $data.tabsetroot ) )
 			this.Tabset( $data.tabset ).removeTabsRoot( $data.tabsetroot )
 	}
-	
+	/** 
+	 */
+	_tabsetRootUnique( $Event, $data )
+	{
+		;$Event.message()
+		;MsgBox,262144,, Test,2
+		;$Event.control().select()
+		$Tabset := this.Tabset( $data.tabset )
+		
+		if( this._MsgBox.confirm("UNIQUE TABS", "Set tabs to unique mode ?`n`n" $Tabset.name() ) )
+			$Tabset.setIniValue("options", "unique", true)
+	}
 	/*---------------------------------------
 		TABSGROUP
 	-----------------------------------------

@@ -80,7 +80,9 @@ Class GuiCallback Extends GuiCallbackMethods
 	 */
 	_DD_Changed($Event, $control_name)
 	{		
-		this["_" $control_name $Event.value](this._getGuiData())
+		this["_" $control_name $Event.value]($Event, this._getGuiData())
+		
+		$Event.control().select() 
 	}
 
 	/*---------------------------------------

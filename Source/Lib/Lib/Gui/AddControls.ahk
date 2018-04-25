@@ -111,10 +111,11 @@ Class AddControls Extends GuiControl
 	 */
 	_addTargetRoot()
 	{
-		if(this._tab.name=="_Tabs" )
-			return
-			
 		$Tabset := this.Tabset(this._tab.name)
+		
+		if( $Tabset.getIniValue("options", "unique") )
+			return
+				
 		
 		this._GroupBox( "TabsetRoot" )
 			.ListBox( $Tabset.getTabsRootsPaths() )
@@ -170,7 +171,9 @@ Class AddControls Extends GuiControl
 	 */
 	_addFoldersSection()
 	{
-		if(this._tab.name=="_Tabs" )
+		$Tabset := this.Tabset(this._tab.name)
+		
+		if( $Tabset.getIniValue("options", "unique") )
 			return
 		
 		$Tabset	:= this.Tabset(this._tab.name)

@@ -24,21 +24,22 @@ Class Tabset
 	
 	/**
 	 */
-	name( $name )
+	name( $name:="" )
 	{
-		this._name	:= $name
-		$path	= %$tabs_path%\%$name%
-		;this._path_tabset	:= $tabs_path "\" this._name
-		this._path_tabset	:= $path	
-		;this._ini_path	:= this._path_tabset "\Tabset.ini"		
-		return this 
+		if( $name )
+		{
+			this._name	:= $name
+			$path	= %$tabs_path%\%$name%
+			this._path_tabset	:= $path	
+		}
+		return $name ? this : this._name
 	}
 	/** create new Tabset
 	 */
 	create()
 	{
 		FileCreateDir, % this._path_tabset
-		this._setIniValue( "roots", this._path_target )
+		this.setIniValue( "roots", this._path_target )
 		return this 
 	}
 	/** create new TabsGroups
@@ -50,7 +51,7 @@ Class Tabset
 		
 		new TabsRoot().setRootFolders( $path )
 		
-		this._setIniValue( "roots", $path )
+		this.setIniValue( "roots", $path )
 
 		return this 
 	}
@@ -164,7 +165,7 @@ Class Tabset
 	 */
 	_setTabsRoots()
 	{
-		$roots := this._getIniValue( "roots" )
+		$roots := this.getIniValue( "roots" )
 		Loop, Parse, % $roots, `n
 		{
 			$key_value	:= StrSplit( A_LoopField, "=")
@@ -236,9 +237,22 @@ Class Tabset
 	*/
 	/**
 	 */
+	setIniValue( $section, $key, $value:="" )
+	{
+		IniWrite, %$value%, % $tabs_path "\\" this._name "\Tabset.ini", %$section%, %$key% 
+	}
+	/**
+	 */
+	getIniValue( $section, $key:="" )
+	{
+		IniRead, $value,	% $tabs_path "\\" this._name "\Tabset.ini", %$section%, %$key%, 
+		return % $value != "ERROR" ? $value : ""
+	}
+	/**
+	 */
 	_loadIniLastUsed()
 	{
-		$last := this._getIniValue( "last" )
+		$last := this.getIniValue( "last" )
 		Loop, Parse, % $last, `n
 		{
 			$key_value	:= StrSplit( A_LoopField, "=")
@@ -249,24 +263,11 @@ Class Tabset
 	 */
 	saveLastToIni( $tabsroot,  $tabgroup, $tabfolder, $tabfile )
 	{
-		this._setIniValue( "last", "root",	$tabsroot )
-		this._setIniValue( "last", "tabsgroup",	$tabgroup )		
-		this._setIniValue( "last", "folder",	$tabfolder )
-		this._setIniValue( "last", "tabfile",	$tabfile )				
+		this.setIniValue( "last", "root",	$tabsroot )
+		this.setIniValue( "last", "tabsgroup",	$tabgroup )		
+		this.setIniValue( "last", "folder",	$tabfolder )
+		this.setIniValue( "last", "tabfile",	$tabfile )				
 		return this
-	}
-	/**
-	 */
-	_setIniValue( $section, $key, $value:="" )
-	{
-		IniWrite, %$value%, % $tabs_path "\\" this._name "\Tabset.ini", %$section%, %$key% 
-	}
-	/**
-	 */
-	_getIniValue( $section, $key:="" )
-	{
-		IniRead, $value,	% $tabs_path "\\" this._name "\Tabset.ini", %$section%, %$key%, 
-		return % $value != "ERROR" ? $value : ""
 	}
 	/**
 	 */
