@@ -18,7 +18,10 @@ setTabsPath()
  */
 setTabsPath()
 {
-	IniRead, $tabs_path, %$ini_path%, paths, tabs_path 
+	IniRead, $tabs_path, %$ini_path%, paths, tabs_path, 0
+
+	if( ! $tabs_path )
+		$tabs_path = %A_ScriptDir%\_tabsets 
 }
 /**
  */

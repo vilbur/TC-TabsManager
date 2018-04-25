@@ -44,42 +44,29 @@ Class AddControls Extends GuiControl
 	_addOptions()
 	{
 		this._gui.controls
-			.GroupBox( "Window Options" )
-				.options( "y-12 h16" )
-				.add("GB_WinOptions")
-
-			.Checkbox("On Top")
-				.options( "x-2 y-8 w64" )
-				.checked( this._getOption("on_top") )
-				.callback( &this "._setOption", "on_top" )
-				.add("CBX_option_onTop")
-			.Checkbox("Center")
-				.options( "x-4 w64" )
-				.checked( this._getOption("center_window") )
-				.callback( &this "._setOption", "center_window" )
-				.add("CBX_option_CenterWindow")
-				
-			.GroupBox( "Loading" )
-				;.options( "" )
-				.add("GB_Loading")
-				
-			.Dropdown( "Active||left|right" )
-				.checked( this._getOption("active_pane") )
-				.options( "x-2 y-8 w64" )
-				.callback( &this "._setOption", "active_pane" )
-				.add("DD_option_activePane")
-				
-			.Checkbox("Title")
-				.options( "w48" )
-				.checked( this._getOption("title") )
-				.callback( &this "._setOption", "title" )
-				.add("CBX_option_title")
-				
-			.Checkbox("Exit")
-				.options( "w48" )
-				.checked( this._getOption("exit_onload") )
-				.callback( &this "._setOption", "exit_onload" )
-				.add("CBX_exit_onload")	
+			.GroupBox( "Window Options" ).options( "y-10 h16" ).add("GB_WinOptions")
+				this._addOpionCheckbox( "on_top", "On Top", "x-2 y-8 w52" )
+				this._addOpionCheckbox( "center_window", "Center" )
+			
+			.GroupBox( "Loading" ).add("GB_Loading")
+				.Dropdown( "Active||left|right" )
+					.checked( this._getOption("active_pane") )
+					.options( "x-2 y-8 w64" )
+					.callback( &this "._setOption", "active_pane" )
+					.add("DD_option_activePane")
+				this._addOpionCheckbox( "title", "Title", "w42" )
+				this._addOpionCheckbox( "exit_onload", "Exit", "x-4" )	
+	}
+	/**
+	 */
+	_addOpionCheckbox( $name, $label, $options:="" )
+	{
+		return % this._gui.controls
+			.Checkbox($label)
+				.options( "w48 " $options )
+				.checked( this._getOption($name) )
+				.callback( &this "._setOption", $name )
+				.add("CBX_" $name)
 	}
 	/*---------------------------------------
 		TABS

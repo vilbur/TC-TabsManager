@@ -114,8 +114,6 @@ Class TabsManager Extends Accessors
 		
 		Run, Notepad++ %$path_tab_file%
 	}
-
-
 	/** get data object from gui or params
 	 */
 	_getData( $tabset:="", $tabsgroup:="", $tabfile:="" )

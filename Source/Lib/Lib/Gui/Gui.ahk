@@ -139,9 +139,8 @@ Class Gui Extends AddControls
 	_bindWindowEvents()
 	{
 		this._gui.Events.Window
-		    ;.on("focus",	&this "._guiFocus")
 		    .on("focus",	&this "._guiFocused")			
-		    ;.on("sizedmoved",	&this ".saveWindowPosition")
+		    ;;.on("sizedmoved",	&this ".saveWindowPosition")
 	} 
 	/**
 	 */
