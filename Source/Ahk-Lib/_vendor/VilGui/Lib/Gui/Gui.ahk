@@ -61,7 +61,9 @@ Class Gui_vgui extends GuiLayout_vgui
 	alwaysOnTop($toggle:=true)
 	{
 		this.options(this._getPlusMinus($toggle) "AlwaysOnTop")
-	
+		
+		this._TooltipRebind()
+
 		return this
 	}
 	/*---------------------------------------
@@ -159,11 +161,31 @@ Class Gui_vgui extends GuiLayout_vgui
 	_setHwnd()
 	{
 		WinWaitActive, % this._title,,2
-		sleep, 100
-		
+
 		this._hwnd := WinActive(this._title)
 		
 		$_GUI[this._hwnd]	:= this
+	}
+	/*---------------------------------------
+		TOOLTIP
+	-----------------------------------------
+	*/
+	/** Tooltips breaks, when window change on top state
+	  *
+	  * This will rebind controls tooltips
+	  *
+	  * IMPORTANT: This require change in Class GuiControlTips in line: 130
+	  *		 Original:	This.CTRL[HCTRL] := 1
+	  *		 Changed:	This.CTRL[HCTRL] := TipText
+	  *
+	 */
+	_TooltipRebind()
+	{
+		$CTRL := this.Tooltip.CTRL
+		this.Tooltip 	:= new GuiControlTips(this._hwnd)
+
+		For $hwnd, $tootltip in $CTRL
+			this.Tooltip.Attach( $hwnd, $tootltip ) 	
 	} 
 
 

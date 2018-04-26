@@ -18,7 +18,6 @@ Class Tab_vgui
 	*/
 	name($name:="~null")
 	{
-		
 		if($name=="~null")
 			return % this._name
 		

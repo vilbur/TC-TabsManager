@@ -5,8 +5,6 @@
 Methods shared with all control types  
 
 
-
-
 __add__( [string __$id__] ) // @return object __Control__  
 	// add control to gui with given id, $id is used as value if value is not defined  
 
@@ -32,7 +30,7 @@ __value__( string __$value__ ) // @return object __Control__
 // value of control  
 
 [include:\controls-basic.ahk]  
-![alt text](https://github.com/vilbur/ahk-vilgui/blob/master/Documentation/controls/controls-main/controls-basic.jpeg?raw=true)  
+![controls basic](controls-basic.jpeg)  
 
 ------------------------------------------------------------------------------------------------------------------------------------  
 
@@ -60,7 +58,6 @@ __clear__() // @return object __Control__
 ## Examples  
 
 [include:\controls-items.ahk]  
-![alt text](https://github.com/vilbur/ahk-vilgui/blob/master/Documentation/controls/controls-main/controls-items.jpeg?raw=true)  
-
+![controls items](controls-items.jpeg)  
 
   

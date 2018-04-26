@@ -33,6 +33,8 @@ Class Gui Extends AddControls
 		
 		this._setGuiShowPosition()
 		
+		;this._gui.alwaysOnTop()
+			
 		this._gui.create()
 
 		this._setFocusOnListbox("LB_TabsGroup")
@@ -45,10 +47,11 @@ Class Gui Extends AddControls
 		
 		this._LB_focusOnInit()
 		
-		sleep, 300 ; wait then TcPaneWatcher is initialized, it handles win onTop state
+		;sleep, 300 ; wait then TcPaneWatcher is initialized, it handles win onTop state
 		if( this._getOption("on_top") )
 			this._gui.alwaysOnTop()
 			
+		;WinSet, AlwaysOnTop, On
 
 		;WinHide, % this._gui.ahkId()
 		;WinShow, % this._gui.ahkId()

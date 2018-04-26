@@ -16,7 +16,7 @@ Class WindowMessage_vgui
 					
 		if( ! this.WindowEvents().has( $event ) )
 			return
-					
+			
 		this._setEventData(lParam)
 		this._setWindowData(lParam)
 		
@@ -113,6 +113,7 @@ onWindowSizeMessage( wParam )
  */
 onWindowSizedMovedMessage( wParam )
 {
+	;MsgBox,262144,wParam, %$wParam%,3 
 	onWindowMessage( "sizedmoved", WinExist("A") )
 }
 
@@ -126,14 +127,14 @@ onWindowMessage( wParam, lParam )
 						
 	if( $GUI )
 	{
-		if( wParam==2 )
-			$GUI.Events.gui.call("onClose")
-		
-		else if( wParam=="sizedmoved" )
-			$GUI._scrollbar()
-		
 		$_last_window	:= lParam ; save gui name for blur
 		$GUI.Events.Window.Message.callEvent(wParam, lParam)
+		
+		if( wParam==2 )
+			$GUI.Events.gui.call("onClose")
+			
+		else if( wParam=="sizedmoved" )
+			$GUI._scrollbar()
 			
 	}
 	else if( wParam==32772 ) { ; if blur

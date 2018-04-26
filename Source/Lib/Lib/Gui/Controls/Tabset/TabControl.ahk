@@ -6,6 +6,11 @@ Class TabControl extends TabControlMethods
 	_Tab	:= {}
 	_Tabset	:= {}	
 	
+	_Tooltips	:= {Listbox:	{TabsetRoot:	"Subfolders of these paths will share tab file"
+			,Folder:	"Folders in root path"
+			,TabsGroup:	"Unique groups of *.tab files"
+			,Tabfile:	"This tab file will be loaded"}}
+	
 	static _LB_WIDTH	:= " w164 "
 	static _LB_HEIGHT	:= " h164 "
 	
@@ -88,17 +93,18 @@ Class TabControl extends TabControlMethods
 		.section()
 		
 			.Radio()
-				.items(["Root","Folder"])
+				.items("Shared")
 				.callback( &this "._R_replaceChanged" )
-				.options("x+8 w72 h30")
+				.options("y-4 x+8 w72 h30")
 				.checked( this._tabsgroup_last=="_shared"?1:0 )
+				.tooltip("Use shared *.tab files")
 				;.checked( this._tabsgroup_last )				
 				.add("R_replace")
 		.section()
 			this._ListBox("TabsGroup"
 						  ,this._Tabset._getTabsGroupsNames()
 						  ,this._tabsgroup_last
-						  ,"h128" )
+						  ,"y-4 h132"  )
 	}
 	/*---------------------------------------
 		TABS FILES
@@ -147,10 +153,11 @@ Class TabControl extends TabControlMethods
 						.checked( $checked )					
 						.callback( &this "._LB_Changed", $name )
 						.options("-Multi" this._LB_WIDTH this._LB_HEIGHT " " $options)
+						.tooltip( this._Tooltips.Listbox[$name] )
 						.add("LB_" $name)
 						.get()
 
-		$ListBox.setItemHeight(1, 18)
+		$ListBox.setItemHeight(1, 16)
 			
 		return this._Tab.Controls
 	} 
@@ -163,7 +170,7 @@ Class TabControl extends TabControlMethods
 						.Dropdown( $items )
 							;.options("x+78 y-24 w72 " $options)
 							.options("y-24 w72 " $options)							
-							;.options($options)							
+							.tooltip( $name " action")
 							.callback( &this "._DD_Changed", $name ) 
 							.add("DD_" $name)
 	}

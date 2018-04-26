@@ -1,15 +1,23 @@
 /** Class Dropdown_vgui
 */
-Class Dropdown_vgui extends ControlItems_vgui{
-	
-	
-	/** Add to GUI
-	*/
-	addItem($name:=""){
-		;this.name($name)
-		;return % this.Controls().add(this) ; clone added object if user insert one object multiple times
-		
-		;Gui, Add, DropDownList, % this.hwnd, Item1|Item2|Item3
+Class Dropdown_vgui extends ControlItems_vgui
+{
+
+	/** Add to Control to GUI
+	 * Or add item if control exist
+	 */
+	add($param:="")
+	{
+		if( ! this.hwnd )
+		{
+			this.name($param)
+			return % this.Controls().add(this) ; clone added object if user insert one object multiple times
+		}
+		else
+		{
+			Gui, Add, DropDownList, % this.hwnd, $param
+			return this	
+		}
 	}
 
 	/** Select item 

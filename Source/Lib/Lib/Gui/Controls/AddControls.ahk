@@ -9,6 +9,10 @@ Class AddControls Extends GuiControl
 	
 	static _LB_HEIGHT	:= " h164 "
 	
+	_Tooltips	:= {Listbox:	{Tabfile:	""
+			,TabsGroup:	""
+			,Folder:	""
+			,TabsetRoot:	""}}	
 	/**
 	 */
 	_addControls()
@@ -34,7 +38,9 @@ Class AddControls Extends GuiControl
 			.Dropdown( "Add|Rename|Remove" )
 				.checked( this.Tabset(this._tab.name).get("last_tabsgroup") )
 				.callback( &this "._DD_Changed", "tabSet" )
+				.tooltip("test")
 				.options( "w64" )
+				.tooltip("Tabset action")
 				.add("DD_tabset")
 	}
 	/*---------------------------------------
@@ -47,27 +53,30 @@ Class AddControls Extends GuiControl
 	{
 		this._gui.controls
 			.GroupBox( "Window Options" ).options( "y-10 h16" ).add("GB_WinOptions")
-				this._addOpionCheckbox( "on_top", "On Top", "x-2 y-8 w52" )
-				this._addOpionCheckbox( "center_window", "Center" )
+				this._optionCheckbox( "on_top", "On Top", "Set window always on top", "y-8" )
+				this._optionCheckbox( "center_window", "Center", "Center Tabs manager to Total Commander" )
 			
 			.GroupBox( "Loading" ).add("GB_Loading")
 				.Dropdown( "Active||left|right" )
 					.checked( this._getOption("active_pane") )
 					.options( "x-2 y-8 w64" )
 					.callback( &this "._setOption", "active_pane" )
+					.tooltip("Where active tabs will be loaded.`nIf *.tab file has both sides")
 					.add("DD_option_activePane")
-				this._addOpionCheckbox( "title", "Title", "w42" )
-				this._addOpionCheckbox( "exit_onload", "Exit", "x-4" )	
+					
+				this._optionCheckbox( "title", "Title", "Set tabs name as title of Total Commander" )
+				this._optionCheckbox( "exit_onload", "Exit", "Exit after load" )	
 	}
 	/**
 	 */
-	_addOpionCheckbox( $name, $label, $options:="" )
+	_optionCheckbox( $name, $label, $tooltip:="", $options:="" )
 	{
 		return % this._gui.controls
 			.Checkbox($label)
-				.options( "w48 " $options )
+				.options( "w64 " $options )
 				.checked( this._getOption($name) )
 				.callback( &this "._setOption", $name )
+				.tooltip($tooltip)
 				.add("CBX_" $name)
 	}
 	/*---------------------------------------
