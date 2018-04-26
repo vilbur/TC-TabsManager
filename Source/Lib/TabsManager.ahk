@@ -4,13 +4,13 @@
 */
 Class TabsManager Extends Accessors
 {
-	_Tabsets	:= new Tabsets().parent(this)
+	_Tabsets	:= new Tabsets().TabsManager(this)
 	_TargetInfo	:= new TargetInfo()	
-	_Gui	:= new Gui().parent(this)
+	_Gui	:= new Gui().TabsManager(this)
 	_Install 	:= new Install()
 	_PathsReplacer 	:= new PathsReplacer()
 	_MsgBox 	:= new MsgBox()
-	_TotalCmd 	:= new TotalCmd().parent(this)
+	_TotalCmd 	:= new TotalCmd().TabsManager(this)
 
 	__New()
 	{

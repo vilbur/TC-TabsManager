@@ -1,7 +1,7 @@
 /** Callbacks for controls
  *
  */
-Class GuiCallback Extends GuiCallbackMethods
+Class GuiCallback extends GuiCallbackMethods
 {
 	/**
 	 */
@@ -112,60 +112,8 @@ Class GuiCallback Extends GuiCallbackMethods
 			;this._updateFolderList( $data )
 		
 		;if( $Event.type=="DoubleClick")
-			;this.Parent().loadTabs()
+			;this.TabsManager().loadTabs()
 	}
-	/**
-	 */
-	_LB_TabsetRootChanged( $Event )
-	{
-		$data	:= this._getGuiData()
-		
-		if( $data.tabsgroup=="_shared" )
-			this._updateFolderList( $data )
-		
-		if( $Event.type=="DoubleClick")
-			this.Parent().loadTabs()
-	}
-	/**
-	 */
-	_LB_TabsGroupChanged( $Event )
-	{
-		if( $Event.type=="DoubleClick")
-			return % this.Parent().loadTabs()
-		
-		$data	:= this._getGuiData()
-		
-		if( $data.tabsgroup!="_shared" )
-			this._tabsGroupUpdateGui( $data )
-			
-		this._TEXT_update()
-	}
-	/**
-	 */
-	_LB_FolderChanged( $Event )
-	{
-		if( $Event.type=="LeftClick" )
-			this._folderChanged($Event)
-		
-		else if( $Event.type=="DoubleClick")
-			this.Parent().loadTabs()
-	}
-	/**
-	 */
-	_LB_TabfileChanged( $Event )
-	{
-		$control_key	:= GetKeyState("control", "P")
-		
-		if( $Event.type=="DoubleClick" ){
-			if( $control_key )
-				this.Parent().openTabs()			
-			else
-				this.Parent().loadTabs()
-		}
-		else
-			this._tabfileSelected($Event)
-	}
-
 
 	/*---------------------------------------
 		OPTIONS

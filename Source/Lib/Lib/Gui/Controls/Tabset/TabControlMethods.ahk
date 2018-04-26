@@ -1,7 +1,7 @@
 /** Control controls in Gui
  *
  */
-Class GuiControl Extends GuiCallback
+Class TabControlMethods Extends TabControlCallback
 {
 	_last_selected_folders	:= {}
 	_last_focused_listbox	:= {root_tabset:"", folder_tabfile:""}
@@ -14,6 +14,7 @@ Class GuiControl Extends GuiCallback
 	 */
 	_getActiveTab()
 	{
+		MsgBox,262144,, TabControlMethods._getActiveTab(),2 
 		return % this._gui.Tabs_Tabsets.getActive()		
 	}
 	/*---------------------------------------
@@ -87,25 +88,27 @@ Class GuiControl Extends GuiCallback
 	 */
 	_LB_unselect($listbox_name )
 	{
-		this._getActiveTab().Controls.get($listbox_name).select(0)	
+		this._Tab.Controls.get($listbox_name).select(0)	
 	}
 	
 	/*---------------------------------------
 		HELPERS
 	-----------------------------------------
 	*/
-	/**
-	 */
-	_getControlValue($control_name)
-	{
-		return % this._gui.Controls.get($control_name).value()
-	}
 	/** get control object from current tab
 	 */
 	_getControl( $control_name )
 	{
-		return % this._getActiveTab().Controls.get($control_name)
+		return % this._Tab.Controls.get($control_name)
 	} 
+	/**
+	 */
+	_getControlValue($control_name)
+	{
+		MsgBox,262144,, TabControlMethods._getControlValue(),2 
+		return % this._getControl($control_name).value()
+	}
+
 	/** get type of listbox for toogling by keyboard
 	 */
 	_getListBoxType( $listbox_name )

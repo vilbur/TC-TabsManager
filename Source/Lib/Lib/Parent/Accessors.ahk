@@ -2,7 +2,12 @@
 */
 Class Accessors
 {
-
+	/**
+	 */
+	Gui()
+	{
+		return % this.TabsManager()._Gui
+	}
 	/**
 	 */
 	Tabsets()
@@ -11,7 +16,7 @@ Class Accessors
 		;$Parent := this.Parent()
 		;Dump($Parent, "Parent", 0)
 		;return % $Parent._Tabsets
-		return % this.Parent()._Tabsets		
+		return % this.TabsManager()._Tabsets		
 	}
 	/**
 	 */
@@ -36,13 +41,13 @@ Class Accessors
 	 */
 	TargetInfo()
 	{
-		return % this.parent()._TargetInfo 
+		return % this.TabsManager()._TargetInfo 
 	}
 	/**
 	 */
 	TotalCmd()
 	{
-		return % this.Parent()._TotalCmd
+		return % this.TabsManager()._TotalCmd
 	}
 	
 

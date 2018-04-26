@@ -21,10 +21,20 @@
 /* GUI
 */
 #Include %A_LineFile%\..\Lib\Gui\Gui.ahk
-#Include %A_LineFile%\..\Lib\Gui\AddControls.ahk
-#Include %A_LineFile%\..\Lib\Gui\GuiControl.ahk
-#Include %A_LineFile%\..\Lib\Gui\GuiCallback.ahk
-#Include %A_LineFile%\..\Lib\Gui\GuiCallbackMethods.ahk
+
+/* CONTROLS 
+*/
+#Include %A_LineFile%\..\Lib\Gui\Controls\AddControls.ahk
+
+#Include %A_LineFile%\..\Lib\Gui\Controls\Tabset\TabControl.ahk
+#Include %A_LineFile%\..\Lib\Gui\Controls\Tabset\TabControlMethods.ahk
+#Include %A_LineFile%\..\Lib\Gui\Controls\Tabset\TabControlCallback.ahk
+#Include %A_LineFile%\..\Lib\Gui\Controls\Tabset\TabControlCallbackMethod.ahk
+
+#Include %A_LineFile%\..\Lib\Gui\Controls\GuiControl.ahk
+#Include %A_LineFile%\..\Lib\Gui\Controls\GuiCallback.ahk
+#Include %A_LineFile%\..\Lib\Gui\Controls\GuiCallbackMethods.ahk
+
 
 #Include %A_LineFile%\..\Lib\TotalCmd\TotalCmd.ahk
 
@@ -48,4 +58,3 @@
 /* TABS FILE REPLACE
 */
 #Include %A_LineFile%\..\Lib\TabsReplacer\PathsReplacer.ahk
-

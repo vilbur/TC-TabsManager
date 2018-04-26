@@ -3,6 +3,7 @@
  */
 Class AddControls Extends GuiControl
 {
+	TabsetTabs := {}
 
 	static _LB_WIDTH := " w164 "
 	
@@ -85,135 +86,16 @@ Class AddControls Extends GuiControl
 						.callback( &this "._TabsChanged" ) 
 						.add("Tabs_Tabsets")
 						.get()
+						
+		;Dump($tabsets_names, "tabsets_names", 1)
 		
-		For $i, $Tabfiles_name in $tabsets_names
-			this._addTab( $i, $Tabfiles_name )
-	}
-	/**
-	 */
-	_addTab( $tab_index, $tab_name )
-	{
-		this._tab := {"index":	$tab_index, "name": $tab_name}
+		For $i, $Tab in this._Tabs.Tabs
+			this.TabsetTabs[$Tab.name()] := new TabControl( $Tab )
+													.TabsManager(this.TabsManager())
+													.addControls()
 		
-		this._addTargetRoot()
-		
-		this._tabControls().layout("row")
-
-		this._addFoldersSection()
-		this._addTabsGroupSection()				
-		this._addTabfileSection()
-	}
-	/*---------------------------------------
-		TABS CONTENT
-	-----------------------------------------
-	*/
-	/**
-	 */
-	_addTargetRoot()
-	{
-		$Tabset := this.Tabset(this._tab.name)
-		
-		if( $Tabset.getIniValue("options", "unique") )
-			return
-				
-		
-		this._GroupBox( "TabsetRoot" )
-			.ListBox( $Tabset.getTabsRootsPaths() )
-				.checked( $Tabset.getLast("root") )					
-				.callback( &this "._LB_TabsetRootChanged" )
-				.options("w520 h64 -Multi")
-				.add("LB_TabsetRoot")
-			
-			this._addDropdown("TabsetRoot", "Add|Remove", "x-92 y-24")
-		.section()
-	}
-	/*---------------------------------------
-		TABSGROUP
-	-----------------------------------------
-	*/
-	/**
-	 */
-	_addTabsGroupSection()
-	{
-		$Tabset	:= this.Tabset(this._tab.name)
-		$tabsgroup_last	:= $Tabset.getLast("tabsgroup")
-		
-				
-		this._GroupBox("TabsGroup" )
-			this._addDropdown("TabsGroup")
-			
-		.section()
-
-			.Radio()
-				.items(["Root","Folder"])
-				.callback( &this "._R_replaceChanged" )
-				.options("x+8 w72 h30")
-				.checked( $tabsgroup_last=="_shared"?1:0 )
-				;.checked( $tabsgroup_last )				
-				.add("R_replace")
-				
-		.section()
-		
-			.ListBox( $Tabset._getTabsGroupsNames() )
-				;.checked( $tabsgroup_last!="_shared" ? $tabsgroup_last : 0 )					
-				.checked( $tabsgroup_last )				
-				.callback( &this "._LB_TabsGroupChanged" )
-				.options("h128 -Multi " this._LB_WIDTH)
-				.add("LB_TabsGroup")
 	}
 
-	/*---------------------------------------
-		ROOT FOLDERS
-	-----------------------------------------
-	*/
-	/** Add folders in target root
-	  * not showed if unique tabs
-	 */
-	_addFoldersSection()
-	{
-		$Tabset := this.Tabset(this._tab.name)
-		
-		if( $Tabset.getIniValue("options", "unique") )
-			return
-		
-		$Tabset	:= this.Tabset(this._tab.name)
-		$root_last	:= $Tabset.getLast("root")
-		$tabsgroup_last	:= $Tabset.getLast("tabsgroup")
-		$tab_folders	:= $tabsgroup_last=="_shared" ? $Tabset._getTabsRootFolders($root_last) : ""
-
-		this._GroupBox("Folders", "Folders in root")
-				.ListBox( $tab_folders )
-					.checked( $Tabset.getLastFolder($root_last) )					
-					.callback( &this "._LB_FolderChanged" )
-					.options("y+8 -Multi " this._LB_WIDTH this._LB_HEIGHT)
-					.add("LB_Folder")
-					
-	} 
-	/*---------------------------------------
-		TABS FILES
-	-----------------------------------------
-	*/
-	/** Add Listbox and other controls
-	 */
-	_addTabfileSection()
-	{
-		$Tabset	:= this.Tabset(this._tab.name)
-		$tabsgroup_last	:= $Tabset.getLast("tabsgroup")
-
-		this._GroupBox("Tabfile", "*.tab files", "column" )
-			this._addDropdown("TabFile")
-
-			.ListBox( this.TabsGroup(this._tab.name, $tabsgroup_last!=1 ? $tabsgroup_last : "_shared" ).getTabFilenames() )
-				;.checked( this.Tabset(this._tab.name).get("last_tabs") )
-				.checked( this.Tabset(this._tab.name).getLast("tabfile") )					
-				.callback( &this "._LB_TabfileChanged" )
-				.options("x-78 -Multi red" this._LB_WIDTH this._LB_HEIGHT)
-				.add("LB_Tabfile")
-				
-			;.section()
-		.GroupEnd()
-	}
-	
 	/*---------------------------------------
 		LOOKUP
 	-----------------------------------------
