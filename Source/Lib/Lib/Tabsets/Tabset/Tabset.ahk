@@ -261,12 +261,13 @@ Class Tabset
 	}
 	/** save last loaded items to *.ini
 	 */
-	saveLastToIni( $tabsroot,  $tabgroup, $tabfolder, $tabfile )
+	saveLastToIni( $data )
 	{
-		this.setIniValue( "last", "root",	$tabsroot )
-		this.setIniValue( "last", "tabsgroup",	$tabgroup )		
-		this.setIniValue( "last", "folder",	$tabfolder )
-		this.setIniValue( "last", "tabfile",	$tabfile )				
+		this.setIniValue( "last", "root",	$data.tabsroot )
+		this.setIniValue( "last", "tabsgroup",	$data.tabgroup )		
+		this.setIniValue( "last", "folder",	$data.tabfolder )
+		this.setIniValue( "last", "tabfile",	$data.tabfile )
+		
 		return this
 	}
 	/**
@@ -275,14 +276,6 @@ Class Tabset
 	{
 		IniDelete, % $tabs_path "\\" this._name "\Tabset.ini", %$section%, %$key%
 	}
-	
-	
 
-	/**
-	 */
-	Test( )
-	{
-		MsgBox,262144,Tabset, Test,2 
-	}
 }
 

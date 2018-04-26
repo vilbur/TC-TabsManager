@@ -74,12 +74,6 @@ Class TabsGroup
 		return %$file_noext%
 	}
 
-	/**
-	 */
-	Test( )
-	{
-		MsgBox,262144,TabsGroup, Test,2 
-	}
 
 	
 }

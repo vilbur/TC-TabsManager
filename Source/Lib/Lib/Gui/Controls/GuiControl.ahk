@@ -34,6 +34,19 @@ Class GuiControl Extends GuiCallback
 		}
 		$LB.focus()
 	}
+	
+	/*---------------------------------------
+		DROPDOWN
+	-----------------------------------------
+	*/
+	
+	/**
+	 */
+	_DD_Changed($Event, $control_name)
+	{		
+		this["_" $control_name $Event.value](this._getGuiData())
+	}
+
 	/*---------------------------------------
 		HELPERS
 	-----------------------------------------
@@ -80,42 +93,18 @@ Class GuiControl Extends GuiCallback
 	_LB_set( $listbox_name, $data:="", $select:=0 )
 	{
 		MsgBox,262144,, GuiControl._LB_set(),2 
-		$listbox := this._getControl( $listbox_name )
-		
-		$listbox.clear()
-		
-		if( $data )
-			$listbox.edit( $data )
-			
-		if( $select )
-			$listbox.select( $select )
 	}
 	/**
 	 */
 	_LB_add( $listbox_name, $data:="", $select:=0 )
 	{
 		MsgBox,262144,, GuiControl._LB_add(),2 
-		$listbox := this._getControl( $listbox_name )
-				
-		if( $data )
-			$listbox.edit( $data )
-			
-		;if( $select )
-		;	$listbox.select( $select )
 	}
 	/**
 	 */
 	_LB_focus( $listbox_name, $select:="" )
 	{
 		MsgBox,262144,, GuiControl._LB_focus(),2 
-		$listbox := this._getControl($listbox_name)
-		
-		$listbox.focus()
-		
-		if( $select )
-			$listbox.select($select)
-
-		this._last_focused_listbox[this._getListBoxType( $listbox_name )] := $listbox_name	
 	}
 
 	/**
@@ -123,8 +112,9 @@ Class GuiControl Extends GuiCallback
 	_LB_unselect($listbox_name )
 	{
 		MsgBox,262144,, GuiControl._LB_unselect(),2 
-		this._getActiveTab().Controls.get($listbox_name).select(0)	
 	}
+	
+	
 	
 	/*---------------------------------------
 		HELPERS
@@ -135,7 +125,6 @@ Class GuiControl Extends GuiCallback
 	_getControlValue($control_name)
 	{
 		MsgBox,262144,, GuiControl._getControlValue(),2 
-		return % this._gui.Controls.get($control_name).value()
 	}
 
 	/** get type of listbox for toogling by keyboard
@@ -143,7 +132,6 @@ Class GuiControl Extends GuiCallback
 	_getListBoxType( $listbox_name )
 	{
 		MsgBox,262144,, GuiControl._getListBoxType(),2 
-		return % $listbox_name=="LB_TabsetRoot" || $listbox_name=="LB_TabsGroup" ? "root_tabset" : "folder_tabfile"
 	} 
 
 	/*---------------------------------------

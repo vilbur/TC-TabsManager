@@ -57,6 +57,11 @@ Class Accessors
 	{
 		return % this.TabsManager()._TotalCmd
 	}
-	
+	/**
+	 */
+	MsgBox()
+	{
+		return % this.TabsManager()._MsgBox
+	}
 
 }

@@ -3,7 +3,9 @@
  */
 Class TabControl extends TabControlMethods
 {
-	_index	:= 0
+	_Tab	:= {}
+	_Tabset	:= {}	
+	
 	static _LB_WIDTH	:= " w164 "
 	static _LB_HEIGHT	:= " h164 "
 	
@@ -40,17 +42,17 @@ Class TabControl extends TabControlMethods
 	 */
 	_addTargetRoot()
 	{		
-		;if( $Tabset.getIniValue("options", "unique") )
+		;if( this._Tabset.getIniValue("options", "unique") )
 			;return
 			
 		this._GroupBox( "TabsetRoot" )
 			.ListBox( this._Tabset.getTabsRootsPaths() )
-				;.checked( $Tabset.getLast("root") )					
+				.checked( this._Tabset.getLast("root") )
 				.callback( &this "._LB_Changed", "TabsetRoot" )
 				.options("w520 h64 -Multi")
 				.add("LB_TabsetRoot")
 			
-			this._addDropdown("TabsetRoot", "Add|Remove", "x-92 y-24")
+			this._addDropdown("TabsetRoot", "Add|Remove|Unique", "x-92 y-24")
 		.section()
 	}
 
@@ -63,7 +65,7 @@ Class TabControl extends TabControlMethods
 	 */
 	_addFoldersSection()
 	{		
-		;if( $Tabset.getIniValue("options", "unique") )
+		;if( this._Tabset.getIniValue("options", "unique") )
 			;return
 		
 		$root_last	:= this._Tabset.getLast("root")
@@ -116,7 +118,6 @@ Class TabControl extends TabControlMethods
 			this._addDropdown("TabFile")
 
 			.ListBox( this._Tabset.getTabsGroup( this._tabsgroup_last!=1 ? this._tabsgroup_last : "_shared" ).getTabFilenames() )
-			;	;.checked( this.Tabset(this._tab.name).get("last_tabs") )
 				.checked( this._Tabset.getLast("tabfile") )					
 				.callback( &this "._LB_Changed", "Tabfile" )
 				.options("x-78 -Multi red" this._LB_WIDTH this._LB_HEIGHT)
@@ -142,7 +143,7 @@ Class TabControl extends TabControlMethods
 						.layout($layout)
 						.options( $options )
 						.add("GB_" $name)
-
+	
 		this._resetFont()
 		
 		return $GroupBox

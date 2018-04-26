@@ -70,9 +70,6 @@ Class TabsManager Extends Accessors
 		$Tabset	:= this.Tabset($data)
 		$path_tab_file	:= this.Tabfile($data).getPath()
 		$target_folder	:= $data.folder ? $data.folder : this.TargetInfo().get( "folder_current" )
-		;MsgBox,262144,, % $data.tabset  ,2
-		
-		;MsgBox,262144,path_tab_file, %$path_tab_file%,3 
 
 		/* GO TO PATH
 		*/
@@ -90,20 +87,18 @@ Class TabsManager Extends Accessors
 					.replaceFolder( $data.folder )
 					.replace( $data.replace )
 		
-		;IniWrite, % $data.tabset, %$ini_path%, tabset, last
 		
-		;this.Tabset($data).saveLastToIni( $data.tabsetroot, $data.tabsgroup, $data.folder, $data.tabfile )
+		this.Tabset($data).saveLastToIni( $data )
 		
 		/* LOAD TAB FILE
 		*/
 		this._TotalCmd._TcTabs.load( $path_tab_file, this._Gui._getOption("active_pane") )		
-		;MsgBox,262144,, LAOD,2 
-		;if( this._Gui._getOption("title") )
-		;	this._TotalCmd._setWindowTitleByTabs($data)
-		;	
+
+		if( this._Gui._getOption("title") )
+			this._TotalCmd._setWindowTitleByTabs($data)
+			
 		;if( this._Gui._getOption("exit_onload") )
 		;	ExitApp
-		
 	}
 	
 	/** open *.tab file

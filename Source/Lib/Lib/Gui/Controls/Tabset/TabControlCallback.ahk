@@ -14,8 +14,6 @@ Class TabControlCallback extends TabControlCallbackMethod
 		else
 			this["_LB_" $listbox_name "Changed"]( $Event )
 	}
-	
-	
 	/**
 	 */
 	_LB_TabsetRootChanged( $Event )
@@ -25,6 +23,8 @@ Class TabControlCallback extends TabControlCallbackMethod
 		
 		if( $data.tabsgroup=="_shared" )
 			this._updateFolderList( $data )
+		
+		this._saveLastTabsRoot( $data )	
 	}
 	/**
 	 */
@@ -42,7 +42,7 @@ Class TabControlCallback extends TabControlCallbackMethod
 		if( $data.tabsgroup!="_shared" )
 			this._tabsGroupUpdateGui( $data )
 			
-		;this._TEXT_update()
+		this.Gui()._TEXT_update()
 	}
 	/**
 	 */
@@ -61,6 +61,19 @@ Class TabControlCallback extends TabControlCallbackMethod
 		
 	}
 	/*---------------------------------------
+		DROPDOWN
+	-----------------------------------------
+	*/
+	
+	/**
+	 */
+	_DD_Changed($Event, $control_name)
+	{
+		;MsgBox,262144,, % "_" $control_name $Event.value
+		this["_" $control_name $Event.value]($Event, this.Gui()._getGuiData())
+	}
+
+	/*---------------------------------------
 		RADIO
 	-----------------------------------------
 	*/
@@ -73,6 +86,6 @@ Class TabControlCallback extends TabControlCallbackMethod
 		if(  $data.tabsgroup!="_shared" ) ; do not update if switching between radio buttons
 			this._tabsGroupUnselect($data)
 		
-		;this._TEXT_update()
+		this.Gui()._TEXT_update()
 	}
 }
