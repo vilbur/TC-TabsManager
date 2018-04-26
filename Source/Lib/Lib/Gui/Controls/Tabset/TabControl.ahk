@@ -91,7 +91,7 @@ Class TabControl extends TabControlMethods
 		
 			.Radio()
 				.items(["Root","Folder"])
-				;.callback( &this "._R_replaceChanged" )
+				.callback( &this "._R_replaceChanged" )
 				.options("x+8 w72 h30")
 				.checked( this._tabsgroup_last=="_shared"?1:0 )
 				;.checked( this._tabsgroup_last )				

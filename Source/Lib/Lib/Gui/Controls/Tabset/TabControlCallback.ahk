@@ -3,6 +3,7 @@
  */
 Class TabControlCallback extends TabControlCallbackMethod
 {
+	
 	/**
 	 */
 	_LB_Changed( $Event, $listbox_name )
@@ -59,5 +60,19 @@ Class TabControlCallback extends TabControlCallbackMethod
 		this._tabfileSelected($Event)
 		
 	}
-	
+	/*---------------------------------------
+		RADIO
+	-----------------------------------------
+	*/
+	/**
+	 */
+	_R_replaceChanged( $Event )
+	{
+		$data	:= this.Gui()._getGuiData()
+
+		if(  $data.tabsgroup!="_shared" ) ; do not update if switching between radio buttons
+			this._tabsGroupUnselect($data)
+		
+		;this._TEXT_update()
+	}
 }

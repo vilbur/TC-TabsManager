@@ -115,7 +115,7 @@ Class TabControlCallbackMethod Extends Parent
 		
 		this._LB_set( "LB_Folder" )
 		
-		this._TEXT_update()
+		;this._TEXT_update()
 	}
 	
 	/*---------------------------------------
@@ -124,7 +124,8 @@ Class TabControlCallbackMethod Extends Parent
 	*/
 	_updateFolderList( $data )
 	{
-		this._LB_set( "LB_Folder", this._getTabsRootFolders( $data ), this.Tabset( $data.tabset ).getIniValue("roots", $data.tabsetroot) )		
+		;MsgBox,262144,, _updateFolderList,2 
+		this._LB_set( "LB_Folder", this._getTabsRootFolders( $data ), this._getLastSeletedFolder($data) )		
 	}
 	/**
 	 */
@@ -134,14 +135,14 @@ Class TabControlCallbackMethod Extends Parent
 		;MsgBox,262144,, % $data.tabset,2
 		;MsgBox,262144,, % $data.tabsetroot,2
 		;MsgBox,262144,, % $data.folder,2 				
-		this.Tabset( $data.tabset ).setIniValue("roots", $data.tabsetroot, $data.folder )
+		this.Tabset( $data ).setIniValue("roots", $data.tabsetroot, $data.folder )
 	}
 	/**
 	 */
 	_getLastSeletedFolder( $data )
 	{
-		$last_folder := this._last_state[$data.tabset][$data.tabsetroot]
-		
+		;$last_folder := this._last_state[$data.tabset][$data.tabsetroot]
+		$last_folder := this.Tabset( $data ).getIniValue("roots", $data.tabsetroot)
 		return % $last_folder ? $last_folder : 1
 	} 
 	/*---------------------------------------
@@ -206,7 +207,7 @@ Class TabControlCallbackMethod Extends Parent
 	{
 		$data	:= this.Gui()._getGuiData()
 
-		this._last_state[$data.tabset][$data.tabsgroup] := $Event.value
+		;this._last_state[$data.tabset][$data.tabsgroup] := $Event.value
 	
 		this._TEXT_update()
 
@@ -217,7 +218,7 @@ Class TabControlCallbackMethod Extends Parent
 	{
 		$tab_filenames := this.TabsGroup($data).getTabFilenames()
 		
-		$last_tabfile	:= this._last_state[$data.tabset][$data.tabsgroup]
+		;$last_tabfile	:= this._last_state[$data.tabset][$data.tabsgroup]
 		
 		this._LB_set( "LB_Tabfile", $tab_filenames, ($last_tabfile ? $last_tabfile : 1) )
 	}

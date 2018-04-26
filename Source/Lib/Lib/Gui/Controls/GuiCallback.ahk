@@ -56,21 +56,7 @@ Class GuiCallback extends GuiCallbackMethods
 	{
 		this._TEXT_update()
 	}	
-	/*---------------------------------------
-		RADIO
-	-----------------------------------------
-	*/
-	/**
-	 */
-	_R_replaceChanged( $Event )
-	{
-		$data	:= this._getGuiData()
 
-		if(  $data.tabsgroup!="_shared" ) ; do not update if switching between radio buttons
-			this._tabsGroupUnselect($data)
-		
-		this._TEXT_update()
-	}
 	/*---------------------------------------
 		DROPDOWN
 	-----------------------------------------
