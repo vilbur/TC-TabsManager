@@ -46,7 +46,7 @@ Class TabControl extends TabControlMethods
 		this._GroupBox( "TabsetRoot" )
 			.ListBox( this._Tabset.getTabsRootsPaths() )
 				;.checked( $Tabset.getLast("root") )					
-				.callback( &this "._LB_TabsetRootChanged" )
+				.callback( &this "._LB_Changed", "TabsetRoot" )
 				.options("w520 h64 -Multi")
 				.add("LB_TabsetRoot")
 			
@@ -72,7 +72,7 @@ Class TabControl extends TabControlMethods
 		this._GroupBox("Folders", "Folders in root")
 				.ListBox( $tab_folders )
 					.checked( this._Tabset.getLastFolder($root_last) )					
-					.callback( &this "._LB_FolderChanged" )
+					.callback( &this "._LB_Changed", "Folder" )
 					.options("y+8 -Multi " this._LB_WIDTH this._LB_HEIGHT)
 					.add("LB_Folder")
 	} 
@@ -100,7 +100,7 @@ Class TabControl extends TabControlMethods
 			.ListBox( this._Tabset._getTabsGroupsNames() )
 		;		;.checked( this._tabsgroup_last!="_shared" ? this._tabsgroup_last : 0 )					
 		;		.checked( this._tabsgroup_last )				
-				.callback( &this "._LB_TabsGroupChanged" )
+				.callback( &this "._LB_Changed", "TabsGroup" )
 				.options("h128 -Multi " this._LB_WIDTH)
 				.add("LB_TabsGroup")
 	}
@@ -118,7 +118,7 @@ Class TabControl extends TabControlMethods
 			.ListBox( this._Tabset.getTabsGroup( this._tabsgroup_last!=1 ? this._tabsgroup_last : "_shared" ).getTabFilenames() )
 			;	;.checked( this.Tabset(this._tab.name).get("last_tabs") )
 				.checked( this._Tabset.getLast("tabfile") )					
-				.callback( &this "._LB_TabfileChanged" )
+				.callback( &this "._LB_Changed", "Tabfile" )
 				.options("x-78 -Multi red" this._LB_WIDTH this._LB_HEIGHT)
 				.add("LB_Tabfile")
 				

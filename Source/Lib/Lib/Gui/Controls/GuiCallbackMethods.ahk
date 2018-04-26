@@ -28,7 +28,7 @@ Class GuiCallbackMethods Extends Parent
 	_TEXT_update()
 	{
 		$data	:= this._getGuiData()
-		$Tabfile	:= this.Tabfile($data.tabset, $data.tabsgroup, $data.tabfile )
+		$Tabfile	:= this.Tabfile($data)
 
 		if( $Tabfile )
 		{

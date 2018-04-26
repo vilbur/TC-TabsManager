@@ -44,6 +44,7 @@ Class Tabsets Extends Parent
 	 */
 	getTabset($Tabset)
 	{
+		;MsgBox,262144,Tabsets.getTabset, %$Tabset%  ,2 		
 		return % this._Tabsets[$Tabset]
 	}
 	 

@@ -275,5 +275,14 @@ Class Tabset
 	{
 		IniDelete, % $tabs_path "\\" this._name "\Tabset.ini", %$section%, %$key%
 	}
+	
+	
+
+	/**
+	 */
+	Test( )
+	{
+		MsgBox,262144,Tabset, Test,2 
+	}
 }
 

@@ -20,23 +20,31 @@ Class Accessors
 	}
 	/**
 	 */
-	Tabset($tabset_name)
+	Tabset($data)
 	{
+		$tabset_name := isObject($data) ? $data.tabset : $data
+		;MsgBox,262144,tabset_name, %$tabset_name%,3 
 		return % this.Tabsets().getTabset($tabset_name)
 	}
 	/**
 	 */
-	TabsGroup($tabset_name, $tabsgroup_name)
+	TabsGroup($data, $tabsgroup_name:="")
 	{
-		return % this.Tabset($tabset_name).getTabsGroup($tabsgroup_name)
+		if( $tabsgroup_name )
+			MsgBox,262144,,Accessors.TabsGroup() PARAMETER IS NOT OBEJCT,2
+		return % this.Tabset($data.tabset).getTabsGroup($data.tabsgroup)
 	}
 	/**
 	 */
-	Tabfile($tabset_name, $tabsgroup_name, $tabfile_name)
-	{		
-		return % this.TabsGroup($tabset_name, $tabsgroup_name).getTabFile($tabfile_name)
+	Tabfile($data, $tabsgroup_name:="", $tabfile_name:="")
+	{
+		if( $tabsgroup_name )
+			MsgBox,262144,,Accessors.Tabfile() PARAMETER IS NOT OBEJCT,2
+		;MsgBox,262144,, Tabfile,2
+		;MsgBox,262144,, % $data.tabfile  ,2 		
+
+		return % this.TabsGroup($data).getTabFile($data.tabfile)
 	}
-	
 	/**
 	 */
 	TargetInfo()

@@ -18,6 +18,7 @@ Class Tabfile
 	 */
 	getPath()
 	{
+		;MsgBox,262144,, getPath,2 
 		return this._path
 	}
 	/** get multiline string of tab captions

@@ -31,10 +31,10 @@ Class TabControlCallbackMethod Extends Parent
 	 */
 	_tabSetRemove()
 	{
-		$data	:= this._getGuiData()
+		$data	:= this.Gui()._getGuiData()
 		
 		if( this._MsgBox.confirm("REMOVE TABSET", "Remove tabset: " $data.tabset, "no") )
-			this.Tabset($data.tabset).delete()
+			this.Tabset($data).delete()
 			
 		Reload
 	}
@@ -90,7 +90,7 @@ Class TabControlCallbackMethod Extends Parent
 	_tabsGroupRemove($data)
 	{
 		if( this._MsgBox.confirm("REMOVE GROUP", "Remove group ?`n`n" $data.tabsgroup ) )
-			this.TabsGroup( $data.tabset , $data.tabsgroup).delete()
+			this.TabsGroup( $data).delete()
 
 		reload
 		
@@ -124,16 +124,17 @@ Class TabControlCallbackMethod Extends Parent
 	*/
 	_updateFolderList( $data )
 	{
-		this._LB_set( "LB_Folder", this._getTabsRootFolders( $data ), this._getLastSeletedFolder($data) )		
+		this._LB_set( "LB_Folder", this._getTabsRootFolders( $data ), this.Tabset( $data.tabset ).getIniValue("roots", $data.tabsetroot) )		
 	}
 	/**
 	 */
 	_folderChanged($Event)
 	{
-		$data	:= this._getGuiData()
-
-		this._last_state[$data.tabset][$data.tabsetroot] := $Event.value
-
+		$data	:= this.Gui()._getGuiData()
+		;MsgBox,262144,, % $data.tabset,2
+		;MsgBox,262144,, % $data.tabsetroot,2
+		;MsgBox,262144,, % $data.folder,2 				
+		this.Tabset( $data.tabset ).setIniValue("roots", $data.tabsetroot, $data.folder )
 	}
 	/**
 	 */
@@ -183,27 +184,27 @@ Class TabControlCallbackMethod Extends Parent
 		$new_name := this._MsgBox.Input("RENAME TABS", "New name of tabs" , {"w":256, "default":$data.tabfile})
 		
 		if( $new_name )
-			this.Tabfile($data.tabset, $data.tabsgroup, $data.tabfile ).rename($new_name)
+			this.Tabfile($data).rename($new_name)
 
-		;$Tabfile	:= this.Tabfile($data.tabset, $data.tabsgroup, $data.tabfile )
+		;$Tabfile	:= this.Tabfile($data)
 	} 
 	/**
 	 */
 	_tabFileRemove()
 	{
-		$data	:= this._getGuiData()
+		$data	:= this.Gui()._getGuiData()
 
 		$tabs_name := $data.tabset " \ " ($data.tabsgroup=="_shared" ? "" : $data.tabsgroup " \ ") $data.tabfile
 
 		if( this._MsgBox.confirm("REMOVE TABS", "Remove tabs ?`n`n" $tabs_name ) )
-			this.Tabfile($data.tabset, $data.tabsgroup, $data.tabfile ).delete()
+			this.Tabfile($data).delete()
 		
 	} 
 	/**
 	 */
 	_tabFileSelected($Event)
 	{
-		$data	:= this._getGuiData()
+		$data	:= this.Gui()._getGuiData()
 
 		this._last_state[$data.tabset][$data.tabsgroup] := $Event.value
 	
@@ -214,7 +215,7 @@ Class TabControlCallbackMethod Extends Parent
 	 */
 	_updateTabfile( $data )
 	{
-		$tab_filenames := this.TabsGroup($data.tabset, $data.tabsgroup ).getTabFilenames()
+		$tab_filenames := this.TabsGroup($data).getTabFilenames()
 		
 		$last_tabfile	:= this._last_state[$data.tabset][$data.tabsgroup]
 		
@@ -229,7 +230,7 @@ Class TabControlCallbackMethod Extends Parent
 	 */
 	_getTabsRootFolders( $data )
 	{
-		return % this.Tabset($data.tabset)._getTabsRootFolders($data.tabsetroot)
+		return % this.Tabset($data)._getTabsRootFolders($data.tabsetroot)
 	}
 	
 }
