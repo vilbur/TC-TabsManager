@@ -3,12 +3,13 @@
  */
 Class GuiCallback extends GuiCallbackMethods
 {
+
 	/**
 	 */
 	_TEST()
 	{
 		MsgBox,262144,, Callback Test,2 		
-		;MsgBox,262144,listbox_new, % "root_tabset: " this._last_focused_listbox.root_tabset "`n`nfolder_tabfile: " this._last_focused_listbox.folder_tabfile,5
+		;MsgBox,262144,listbox_new, % "root_tabset: " this._last_listbox.root_tabset "`n`nfolder_tabfile: " this._last_listbox.folder_tabfile,5
 
 	}
 	/*---------------------------------------
@@ -79,13 +80,13 @@ Class GuiCallback extends GuiCallbackMethods
 	 */
 	_LB_ToggleRootsAndTabset( $Event, $listbox_name )
 	{
-		this._LB_focus(  this._last_focused_listbox.root_tabset=="LB_TabsetRoot" ? "LB_TabsGroup" : "LB_TabsetRoot" )
+		this._LB_focus(  this._last_listbox.root_tabset=="LB_TabsetRoot" ? "LB_TabsGroup" : "LB_TabsetRoot" )
 	}
 	/**
 	 */
 	_LB_FoldersAndTabfile( $Event, $listbox_name )
 	{
-		this._LB_focus(  this._last_focused_listbox.folder_tabfile=="LB_Folder" ? "LB_Tabfile" : "LB_Folder" )
+		this._LB_focus(  this._last_listbox.folder_tabfile=="LB_Folder" ? "LB_Tabfile" : "LB_Folder" )
 	}
 	/**
 	 */

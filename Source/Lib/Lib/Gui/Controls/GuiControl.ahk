@@ -4,7 +4,7 @@
 Class GuiControl Extends GuiCallback
 {
 	_last_selected_folders	:= {}
-	_last_focused_listbox	:= {root_tabset:"", folder_tabfile:""}
+	_last_listbox	:= {root_tabset:"", folder_tabfile:""} ; last focused control
 
 	/*---------------------------------------
 		TAB
@@ -59,7 +59,31 @@ Class GuiControl Extends GuiCallback
 		return % this._getActiveTab().Controls.get($control_name)
 	} 
 	
+	/** get type of listbox for toogling by keyboard
+	 */
+	_getListBoxType( $listbox_name )
+	{
+		return % $listbox_name=="LB_TabsetRoot" || $listbox_name=="LB_TabsGroup" ? "root_tabset" : "folder_tabfile"
+	} 	
 	
+	
+	/*---------------------------------------
+		LISTBOX
+	-----------------------------------------
+	*/
+	/**
+	 */
+	_LB_focus( $listbox_name, $select:="" )
+	{
+		$listbox := this._getControl($listbox_name)
+		
+		$listbox.focus()
+		
+		if( $select )
+			$listbox.select($select)
+
+		this._last_listbox[this._getListBoxType( $listbox_name )] := $listbox_name	
+	}	
 	
 	
 	
@@ -87,7 +111,7 @@ Class GuiControl Extends GuiCallback
 	}
 	
 	/*---------------------------------------
-		LISTBOX
+		LISTBOX OLD
 	-----------------------------------------
 	*/
 	_LB_set( $listbox_name, $data:="", $select:=0 )
@@ -100,12 +124,7 @@ Class GuiControl Extends GuiCallback
 	{
 		MsgBox,262144,, GuiControl._LB_add(),2 
 	}
-	/**
-	 */
-	_LB_focus( $listbox_name, $select:="" )
-	{
-		MsgBox,262144,, GuiControl._LB_focus(),2 
-	}
+
 
 	/**
 	 */
@@ -127,12 +146,7 @@ Class GuiControl Extends GuiCallback
 		MsgBox,262144,, GuiControl._getControlValue(),2 
 	}
 
-	/** get type of listbox for toogling by keyboard
-	 */
-	_getListBoxType( $listbox_name )
-	{
-		MsgBox,262144,, GuiControl._getListBoxType(),2 
-	} 
+
 
 	/*---------------------------------------
 		UNUSED

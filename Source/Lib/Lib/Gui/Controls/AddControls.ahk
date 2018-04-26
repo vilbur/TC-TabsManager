@@ -108,13 +108,13 @@ Class AddControls Extends GuiControl
 		
 		For $pane, $style in {"left":"cGreen", "right":"cBlue"}
 		{
-			this._setFont( "s8", $style  )
+			this.Gui()._setFont( "s8", $style  )
 			this._gui.Controls.Text()
 					.options(" w268 h40 top " ($i==1?"y-10":"")  )
 					.add("TEXT_pane_" $pane )
 		}
 								
-		this._resetFont()
+		this.Gui()._resetFont()
 	} 
 
 	/*---------------------------------------
@@ -151,31 +151,33 @@ Class AddControls Extends GuiControl
 	 */
 	_GroupBox( $name, $label:="", $layout:="row")
 	{
-		this._setFont()
-		
-		$options := this._tab.name=="_Tabs"	? ($name=="TabsGroup" ? "y+64 " : "") "x+64" : ""	
-
-		$GroupBox	:= this._tabControls()
-					 .GroupBox( $label ? $label : $name )
-						.layout($layout)
-						.options( $options )
-						.add("GB_" $name)
-
-		this._resetFont()
-		
-		return $GroupBox
+		MsgBox,262144,, AddControls._GroupBox(),2 
+		;this._setFont()
+		;
+		;$options := this._tab.name=="_Tabs"	? ($name=="TabsGroup" ? "y+64 " : "") "x+64" : ""	
+		;
+		;$GroupBox	:= this._tabControls()
+		;			 .GroupBox( $label ? $label : $name )
+		;				.layout($layout)
+		;				.options( $options )
+		;				.add("GB_" $name)
+		;
+		;this._resetFont()
+		;
+		;return $GroupBox
 	}
 	/**
 	 */
 	_addDropdown( $name, $items:="Add|Rename|Remove", $options:="x+78" )
 	{
-		return % this._tabControls()
-						.Dropdown( $items )
-							;.options("x+78 y-24 w72 " $options)
-							.options("y-24 w72 " $options)							
-							;.options($options)							
-							.callback( &this "._DD_Changed", $name ) 
-							.add("DD_" $name)
+		MsgBox,262144,, AddControls._addDropdown(),2 
+		;return % this._tabControls()
+		;				.Dropdown( $items )
+		;					;.options("x+78 y-24 w72 " $options)
+		;					.options("y-24 w72 " $options)							
+		;					;.options($options)							
+		;					.callback( &this "._DD_Changed", $name ) 
+		;					.add("DD_" $name)
 	}
 	/**
 	 */
@@ -183,20 +185,8 @@ Class AddControls Extends GuiControl
 	{
 		return this._Tabs.Tabs[this._tab.index].Controls
 	} 
-	/**
-	 */
-	_setFont( $size:="s8", $color:="cBlue bold" )
-	{
-		this._gui.gui("Font",  $size " " $color )
-	}
-	/**
-	 */
-	_resetFont()
-	{
-		this._gui.gui("Font")
-	}
-	
-	
+
+
 
 }
 

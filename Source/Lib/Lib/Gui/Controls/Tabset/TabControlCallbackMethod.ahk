@@ -34,7 +34,7 @@ Class TabControlCallbackMethod Extends Parent
 		$data	:= this.Gui()._getGuiData()
 		
 		if( this.MsgBox().confirm("REMOVE TABSET", "Remove tabset: " $data.tabset, "no") )
-			this.Tabset($data).delete()
+			this._Tabset.delete()
 			
 		Reload
 	}
@@ -46,7 +46,7 @@ Class TabControlCallbackMethod Extends Parent
 	 */
 	_tabsetRootAdd( $Event, $data )
 	{
-		this.Tabset( $data )
+		this._Tabset
 			.createTabsRoot( this._askPathToRoot() )
 	} 
 	/**
@@ -54,19 +54,19 @@ Class TabControlCallbackMethod Extends Parent
 	_tabsetRootRemove( $Event, $data )
 	{
 		if( this.MsgBox().confirm("REMOVE ROOT", "Remove root ?`n`n" $data.tabsetroot ) )
-			this.Tabset( $data ).removeTabsRoot( $data.tabsetroot )
+			this._Tabset.removeTabsRoot( $data.tabsetroot )
 	}
 	/** 
 	 */
 	_tabsetRootUnique( $Event, $data )
 	{
 		;
-		;$Tabset := this.Tabset( $data )
+		;$Tabset := this._Tabset
 		;
 		;if( this.MsgBox().confirm("UNIQUE TABS", "Set tabs to unique mode ?`n`n" $Tabset.name() ) )
 		;	$Tabset.setIniValue("options", "unique", true)
 		
-		;$Tabset := this.Tabset( $data )
+		;$Tabset := this._Tabset
 		
 		if( this.MsgBox().confirm("UNIQUE TABS", "Set tabs to unique mode ?`n`n" this._Tabset.name() ) )
 			this._Tabset.setIniValue("options", "unique", true)			
@@ -82,7 +82,7 @@ Class TabControlCallbackMethod Extends Parent
 	{				
 		$name := $data.folder ? $data.folder : this.TotalCmd().getDir()
 		
-		$tabsgroup := this.Tabset( $data )
+		$tabsgroup := this._Tabset
 						.createTabsGroup( this.MsgBox().Input("ADD NEW TABSGROUP", "New tabsgroup name" , {"w":320, "default":$name} ) )
 		
 		if( $tabsgroup )
@@ -146,7 +146,7 @@ Class TabControlCallbackMethod Extends Parent
 	_getLastSeletedFolder( $data )
 	{
 		;$last_folder := this._last_state[$data.tabset][$data.tabsetroot]
-		$last_folder := this.Tabset( $data ).getIniValue("roots", $data.tabsetroot)
+		$last_folder := this._Tabset.getIniValue("roots", $data.tabsetroot)
 		return % $last_folder ? $last_folder : 1
 	} 
 	/*---------------------------------------
@@ -235,19 +235,19 @@ Class TabControlCallbackMethod Extends Parent
 	 */
 	_getTabsRootFolders( $data )
 	{
-		return % this.Tabset($data)._getTabsRootFolders($data.tabsetroot)
+		return % this._Tabset._getTabsRootFolders($data.tabsetroot)
 	}
 		/**
 	 */
 	_saveLastTabsFolder( $data )
 	{
-		this.Tabset( $data ).setIniValue("roots", $data.tabsetroot, $data.folder )
+		this._Tabset.setIniValue("roots", $data.tabsetroot, $data.folder )
 	}
 	/**
 	 */
 	_saveLastTabsRoot( $data )
 	{
-		this.Tabset( $data ).setIniValue("last", "root", $data.tabsetroot )
+		this._Tabset.setIniValue("last", "root", $data.tabsetroot )
 	} 
 	
 }

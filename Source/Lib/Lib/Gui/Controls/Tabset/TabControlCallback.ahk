@@ -3,7 +3,6 @@
  */
 Class TabControlCallback extends TabControlCallbackMethod
 {
-	
 	/**
 	 */
 	_LB_Changed( $Event, $listbox_name )

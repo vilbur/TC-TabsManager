@@ -26,7 +26,7 @@ Class TabControl extends TabControlMethods
 		
 		;Dump(this._Tabset, "this._Tabset", 1)
 		this._addTargetRoot()
-		this._tabControls().layout("row")
+		this._Tab.Controls.layout("row")
 
 		this._addFoldersSection()
 		this._addTabsGroupSection()				
@@ -135,7 +135,7 @@ Class TabControl extends TabControlMethods
 	 */
 	_GroupBox( $name, $label:="", $layout:="row")
 	{
-		this._setFont()
+		this.Gui()._setFont()
 		;$options := this._tab.name=="_Tabs"	? ($name=="TabsGroup" ? "y+64 " : "") "x+64" : ""	
 
 		$GroupBox	:= this._Tab.Controls
@@ -144,7 +144,7 @@ Class TabControl extends TabControlMethods
 						.options( $options )
 						.add("GB_" $name)
 	
-		this._resetFont()
+		this.Gui()._resetFont()
 		
 		return $GroupBox
 	}
@@ -161,31 +161,7 @@ Class TabControl extends TabControlMethods
 							.add("DD_" $name)
 	}
 	
-	/**
-	 */
-	_tabControls()
-	{
-		return this._Tab.Controls
-	}
-	
-	
-	;/*---------------------------------------
-	;	PARENT
-	;-----------------------------------------
-	;*/
-	;static _Gui := {"address":""}
-	;
-	;/** set\get parent class
-	; * @return object parent class
-	;*/
-	;Gui($Gui:=""){
-	;	;MsgBox,262144,, Gui,2 
-	;
-	;	if($Gui)
-	;		this._Gui.address	:= &$Gui
-	;	return % $Gui ? this : Object(this._Gui.address)
-	;}
-	;
+
 	
 	
 }

@@ -95,7 +95,56 @@ Class Gui Extends AddControls
 		else
 			this._gui.position( this._getWindowIniPosition("x"), this._getWindowIniPosition("y") )
 
-	}  
+	}
+	
+	/**
+	 */
+	_getGuiData()
+	{
+		$tab	:= this._getActiveTab()
+		$Controls	:= $tab.Controls
+		$form_data	:= {"tabset":	$tab.name()
+			   ,"tabsgroup":	"_shared"}
+		
+		For $control_name, $value in $Controls.values()
+			if( $value && ! InStr($control_name, "DD_" ) )
+				 $form_data[RegExReplace( $control_name, "^[^_]+_", "" )] :=  $value
+		
+		return $form_data
+		;return %	{"tabset":	$tab.name()
+		;	,"tabsetroot":	$Controls.get("LB_TabssetRoot").value()
+		;	,"tabsgroup":	$Controls.get("LB_TabsGroup").value()			
+		;	,"replace":	$Controls.get("R_replace").value()
+		;	,"folder":	$Controls.get("LB_FoldersList").value()			
+		;	,"tabfile":	$Controls.get("LB_Tabfile").value()}
+	}
+	/**
+	 */
+	saveWindowPosition($Event, $params*)
+	{
+		;$Event.message()
+		if( ! $Event.x )
+			return 
+		
+		IniWrite, % $Event.x, %$ini_path%, window, x
+		IniWrite, % $Event.y, %$ini_path%, window, y
+		
+		IniWrite, % $Event.width, 	%$ini_path%, window, width
+		IniWrite, % $Event.height,	%$ini_path%, window, height						
+		
+	}
+	/**
+	 */
+	_getWindowIniPosition($xy)
+	{
+		IniRead, $value, %$ini_path%, %$xy%, x, 0
+		
+		return $value 
+	}
+	/*---------------------------------------
+		EVENTS
+	-----------------------------------------
+	*/
 	/**
 	 */
 	_bindKeyEvents()
@@ -141,50 +190,6 @@ Class Gui Extends AddControls
 		    .on("focus",	&this "._guiFocused")			
 		    ;;.on("sizedmoved",	&this ".saveWindowPosition")
 	} 
-	/**
-	 */
-	_getGuiData()
-	{
-		$tab	:= this._getActiveTab()
-		$Controls	:= $tab.Controls
-		$form_data	:= {"tabset":	$tab.name()
-			   ,"tabsgroup":	"_shared"}
-		
-		For $control_name, $value in $Controls.values()
-			if( $value && ! InStr($control_name, "DD_" ) )
-				 $form_data[RegExReplace( $control_name, "^[^_]+_", "" )] :=  $value
-		
-		return $form_data
-		;return %	{"tabset":	$tab.name()
-		;	,"tabsetroot":	$Controls.get("LB_TabssetRoot").value()
-		;	,"tabsgroup":	$Controls.get("LB_TabsGroup").value()			
-		;	,"replace":	$Controls.get("R_replace").value()
-		;	,"folder":	$Controls.get("LB_FoldersList").value()			
-		;	,"tabfile":	$Controls.get("LB_Tabfile").value()}
-	}
-	/**
-	 */
-	saveWindowPosition($Event, $params*)
-	{
-		;$Event.message()
-		if( ! $Event.x )
-			return 
-		
-		IniWrite, % $Event.x, %$ini_path%, window, x
-		IniWrite, % $Event.y, %$ini_path%, window, y
-		
-		IniWrite, % $Event.width, 	%$ini_path%, window, width
-		IniWrite, % $Event.height,	%$ini_path%, window, height						
-		
-	}
-	/**
-	 */
-	_getWindowIniPosition($xy)
-	{
-		IniRead, $value, %$ini_path%, %$xy%, x, 0
-		
-		return $value 
-	} 
 	/*---------------------------------------
 		OPTIONS
 	-----------------------------------------
@@ -197,8 +202,19 @@ Class Gui Extends AddControls
 		
 		return $value
 	}
-
-	
+	/**
+	 */
+	_setFont( $size:="s8", $color:="cBlue bold" )
+	{
+		this._gui.gui("Font",  $size " " $color )
+	}
+	/**
+	 */
+	_resetFont()
+	{
+		;MsgBox,262144,, _resetFont,2 
+		this._gui.gui("Font")
+	}
 }
 
 
