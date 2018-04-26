@@ -114,12 +114,6 @@ Class Gui Extends AddControls
 				 $form_data[RegExReplace( $control_name, "^[^_]+_", "" )] :=  $value
 		
 		return $form_data
-		;return %	{"tabset":	$tab.name()
-		;	,"tabsetroot":	$Controls.get("LB_TabssetRoot").value()
-		;	,"tabsgroup":	$Controls.get("LB_TabsGroup").value()			
-		;	,"replace":	$Controls.get("R_replace").value()
-		;	,"folder":	$Controls.get("LB_FoldersList").value()			
-		;	,"tabfile":	$Controls.get("LB_Tabfile").value()}
 	}
 	/**
 	 */
@@ -152,6 +146,7 @@ Class Gui Extends AddControls
 	 */
 	_bindKeyEvents()
 	{
+
 		this._gui.Events.Key
 				.onEscape("exit")
 				.onEnter( this._Parent ".loadTabs")

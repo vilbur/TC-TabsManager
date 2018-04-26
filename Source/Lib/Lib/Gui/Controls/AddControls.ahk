@@ -9,10 +9,11 @@ Class AddControls Extends GuiControl
 	
 	static _LB_HEIGHT	:= " h164 "
 	
-	_Tooltips	:= {Listbox:	{Tabfile:	""
-			,TabsGroup:	""
-			,Folder:	""
-			,TabsetRoot:	""}}	
+	_Tooltips	:= {Dropdown:	{active_pane:	"Where active tabs will be loaded.`nOnly if *.tab file has both sides."}
+		,Checkbox:	{on_top:	"Set window always on top"
+			,center_window:	"Center Tabs manager to Total Commander"
+			,title:	"Set tabs name as title of Total Commander"			
+			,exit_onload:	"Exit after load"}}	
 	/**
 	 */
 	_addControls()
@@ -53,30 +54,30 @@ Class AddControls Extends GuiControl
 	{
 		this._gui.controls
 			.GroupBox( "Window Options" ).options( "y-10 h16" ).add("GB_WinOptions")
-				this._optionCheckbox( "on_top", "On Top", "Set window always on top", "y-8" )
-				this._optionCheckbox( "center_window", "Center", "Center Tabs manager to Total Commander" )
+				this._optionCheckbox( "on_top", "On Top", "y-8" )
+				this._optionCheckbox( "center_window", "Center" )
 			
 			.GroupBox( "Loading" ).add("GB_Loading")
 				.Dropdown( "Active||left|right" )
 					.checked( this._getOption("active_pane") )
 					.options( "x-2 y-8 w64" )
 					.callback( &this "._setOption", "active_pane" )
-					.tooltip("Where active tabs will be loaded.`nIf *.tab file has both sides")
+					.tooltip(this._Tooltips.Dropdown["active_pane"])
 					.add("DD_option_activePane")
 					
-				this._optionCheckbox( "title", "Title", "Set tabs name as title of Total Commander" )
-				this._optionCheckbox( "exit_onload", "Exit", "Exit after load" )	
+				this._optionCheckbox( "title", "Title" )
+				this._optionCheckbox( "exit_onload", "Exit" )	
 	}
 	/**
 	 */
-	_optionCheckbox( $name, $label, $tooltip:="", $options:="" )
+	_optionCheckbox( $name, $label, $options:="" )
 	{
 		return % this._gui.controls
 			.Checkbox($label)
 				.options( "w64 " $options )
 				.checked( this._getOption($name) )
 				.callback( &this "._setOption", $name )
-				.tooltip($tooltip)
+				.tooltip(this._Tooltips.Checkbox[$name])
 				.add("CBX_" $name)
 	}
 	/*---------------------------------------
@@ -97,13 +98,11 @@ Class AddControls Extends GuiControl
 						.add("Tabs_Tabsets")
 						.get()
 						
-		;Dump($tabsets_names, "tabsets_names", 1)
 		
 		For $i, $Tab in this._Tabs.Tabs
 			this.TabsetTabs[$Tab.name()] := new TabControl( $Tab )
 													.TabsManager(this.TabsManager())
 													.addControls()
-		
 	}
 
 	/*---------------------------------------
@@ -123,7 +122,7 @@ Class AddControls Extends GuiControl
 					.options(" w268 h40 top " ($i==1?"y-10":"")  )
 					.add("TEXT_pane_" $pane )
 		}
-								
+
 		this.Gui()._resetFont()
 	} 
 
@@ -137,7 +136,6 @@ Class AddControls Extends GuiControl
 	{
 		this._gui.Controls
 			.section()
-			;.GroupBox().layout("row").add("MainButtons")
 				.Button()
 					.callback( this._Parent ".loadTabs" )
 					.options("h48 w440")
@@ -146,56 +144,26 @@ Class AddControls Extends GuiControl
 					.callback( this._Parent ".loadTabs" )
 					.options("w96 h48")
 					.exit("Exit")
-					
-				;.Button()
-					;.callback( &this "._BTN_TEST" )
-					;;.options("w96 h48")
-					;.add("TEST")		
+
 	}
 
 	/*---------------------------------------
 		HELPERS
 	-----------------------------------------
 	*/
-	/** Add styled groupbox
-	 */
-	_GroupBox( $name, $label:="", $layout:="row")
-	{
-		MsgBox,262144,, AddControls._GroupBox(),2 
-		;this._setFont()
-		;
-		;$options := this._tab.name=="_Tabs"	? ($name=="TabsGroup" ? "y+64 " : "") "x+64" : ""	
-		;
-		;$GroupBox	:= this._tabControls()
-		;			 .GroupBox( $label ? $label : $name )
-		;				.layout($layout)
-		;				.options( $options )
-		;				.add("GB_" $name)
-		;
-		;this._resetFont()
-		;
-		;return $GroupBox
-	}
-	/**
-	 */
-	_addDropdown( $name, $items:="Add|Rename|Remove", $options:="x+78" )
-	{
-		MsgBox,262144,, AddControls._addDropdown(),2 
-		;return % this._tabControls()
-		;				.Dropdown( $items )
-		;					;.options("x+78 y-24 w72 " $options)
-		;					.options("y-24 w72 " $options)							
-		;					;.options($options)							
-		;					.callback( &this "._DD_Changed", $name ) 
-		;					.add("DD_" $name)
-	}
+
 	/**
 	 */
 	_tabControls()
 	{
 		return this._Tabs.Tabs[this._tab.index].Controls
 	} 
-
+	/**
+	 */
+	_tooltip( $control_type, $name )
+	{
+		return % this._Tooltips[$control_type][$name]
+	} 
 
 
 }
