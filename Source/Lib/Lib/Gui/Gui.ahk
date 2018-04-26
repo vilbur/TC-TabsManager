@@ -202,6 +202,11 @@ Class Gui Extends AddControls
 		
 		return $value
 	}
+	     
+	/*---------------------------------------
+		FONT
+	-----------------------------------------
+	*/
 	/**
 	 */
 	_setFont( $size:="s8", $color:="cBlue bold" )

@@ -33,7 +33,8 @@ Class AddControls Extends GuiControl
 		this._gui.controls
 			.Dropdown( "Add|Rename|Remove" )
 				.checked( this.Tabset(this._tab.name).get("last_tabsgroup") )
-				.callback( &this "._DD_Changed", "tabSet" ) 
+				.callback( &this "._DD_Changed", "tabSet" )
+				.options( "w64" )
 				.add("DD_tabset")
 	}
 	/*---------------------------------------

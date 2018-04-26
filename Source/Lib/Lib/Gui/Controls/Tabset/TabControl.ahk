@@ -46,13 +46,8 @@ Class TabControl extends TabControlMethods
 			;return
 			
 		this._GroupBox( "TabsetRoot" )
-			.ListBox( this._Tabset.getTabsRootsPaths() )
-				.checked( this._Tabset.getLast("root") )
-				.callback( &this "._LB_Changed", "TabsetRoot" )
-				.options("w520 h64 -Multi")
-				.add("LB_TabsetRoot")
-			
-			this._addDropdown("TabsetRoot", "Add|Remove|Unique", "x-92 y-24")
+		this._ListBox( "TabsetRoot",this._Tabset.getTabsRootsPaths(), this._Tabset.getLast("root"), "w520 h96" )
+		this._addDropdown("TabsetRoot", "Add|Remove|Unique", "x-92 y-24")
 		.section()
 	}
 
@@ -72,11 +67,12 @@ Class TabControl extends TabControlMethods
 		$tab_folders	:= this._tabsgroup_last=="_shared" ? this._Tabset._getTabsRootFolders($root_last) : ""
 
 		this._GroupBox("Folders", "Folders in root")
-				.ListBox( $tab_folders )
-					.checked( this._Tabset.getLastFolder($root_last) )					
-					.callback( &this "._LB_Changed", "Folder" )
-					.options("y+8 -Multi " this._LB_WIDTH this._LB_HEIGHT)
-					.add("LB_Folder")
+		this._ListBox("Folder"
+					  ,$tab_folders
+					  ,this._Tabset.getLastFolder($root_last)
+					  ,"y+8" )
+		
+
 	} 
 	/*---------------------------------------
 		TABSGROUP
@@ -99,12 +95,10 @@ Class TabControl extends TabControlMethods
 				;.checked( this._tabsgroup_last )				
 				.add("R_replace")
 		.section()
-			.ListBox( this._Tabset._getTabsGroupsNames() )
-		;		;.checked( this._tabsgroup_last!="_shared" ? this._tabsgroup_last : 0 )					
-		;		.checked( this._tabsgroup_last )				
-				.callback( &this "._LB_Changed", "TabsGroup" )
-				.options("h128 -Multi " this._LB_WIDTH)
-				.add("LB_TabsGroup")
+			this._ListBox("TabsGroup"
+						  ,this._Tabset._getTabsGroupsNames()
+						  ,this._tabsgroup_last
+						  ,"h128" )
 	}
 	/*---------------------------------------
 		TABS FILES
@@ -116,19 +110,16 @@ Class TabControl extends TabControlMethods
 	{
 		this._GroupBox("Tabfile", "*.tab files", "column" )
 			this._addDropdown("TabFile")
+			this._ListBox("Tabfile"
+						  ,this._Tabset.getTabsGroup( this._tabsgroup_last!=1 ? this._tabsgroup_last : "_shared" ).getTabFilenames()
+						  ,this._Tabset.getLast("tabfile")
+						  ,"x-78" )
 
-			.ListBox( this._Tabset.getTabsGroup( this._tabsgroup_last!=1 ? this._tabsgroup_last : "_shared" ).getTabFilenames() )
-				.checked( this._Tabset.getLast("tabfile") )					
-				.callback( &this "._LB_Changed", "Tabfile" )
-				.options("x-78 -Multi red" this._LB_WIDTH this._LB_HEIGHT)
-				.add("LB_Tabfile")
-				
-			;.section()
 		.GroupEnd()
 	}
 	
 	/*---------------------------------------
-		HELPERS
+		ADDING CONTROL BY TYPE
 	-----------------------------------------
 	*/
 	/** Add styled groupbox
@@ -148,6 +139,22 @@ Class TabControl extends TabControlMethods
 		
 		return $GroupBox
 	}
+	/**
+	 */
+	_ListBox( $name, $items, $checked, $options:="" )
+	{
+		$ListBox := this._Tab.Controls.ListBox( $items )
+						.checked( $checked )					
+						.callback( &this "._LB_Changed", $name )
+						.options("-Multi" this._LB_WIDTH this._LB_HEIGHT " " $options)
+						.add("LB_" $name)
+						.get()
+
+		$ListBox.setItemHeight(1, 18)
+			
+		return this._Tab.Controls
+	} 
+	
 	/**
 	 */
 	_addDropdown( $name, $items:="Add|Rename|Remove", $options:="x+78" )
