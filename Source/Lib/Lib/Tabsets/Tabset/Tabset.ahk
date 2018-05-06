@@ -235,6 +235,17 @@ Class Tabset
 		INI METHODS
 	-----------------------------------------
 	*/
+	/** save last loaded items to *.ini
+	 */
+	saveLastToIni( $data )
+	{
+		this.setIniValue( "last", "root",	$data.tabsetroot )
+		this.setIniValue( "last", "tabsgroup",	$data.tabsgroup )		
+		this.setIniValue( "last", "folder",	$data.folder )
+		this.setIniValue( "last", "tabfile",	$data.tabfile )
+		
+		return this
+	}
 	/**
 	 */
 	setIniValue( $section, $key, $value:="" )
@@ -258,17 +269,6 @@ Class Tabset
 			$key_value	:= StrSplit( A_LoopField, "=")
 			this._last[$key_value[1]] := $key_value[2]
 		}
-	}
-	/** save last loaded items to *.ini
-	 */
-	saveLastToIni( $data )
-	{
-		this.setIniValue( "last", "root",	$data.tabsroot )
-		this.setIniValue( "last", "tabsgroup",	$data.tabgroup )		
-		this.setIniValue( "last", "folder",	$data.tabfolder )
-		this.setIniValue( "last", "tabfile",	$data.tabfile )
-		
-		return this
 	}
 	/**
 	 */

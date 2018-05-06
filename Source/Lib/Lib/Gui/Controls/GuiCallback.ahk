@@ -6,9 +6,10 @@ Class GuiCallback extends GuiCallbackMethods
 
 	/**
 	 */
-	_TEST()
+	_TEST($Event:="")
 	{
-		MsgBox,262144,, Callback Test,2 		
+		$Event.message(100) 
+		;MsgBox,262144,, Callback Test,2 		
 		;MsgBox,262144,listbox_new, % "root_tabset: " this._last_listbox.root_tabset "`n`nfolder_tabfile: " this._last_listbox.folder_tabfile,5
 
 	}

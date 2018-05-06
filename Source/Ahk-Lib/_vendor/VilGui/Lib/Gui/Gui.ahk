@@ -136,19 +136,18 @@ Class Gui_vgui extends GuiLayout_vgui
 		PRIVATE METHODS
 	-----------------------------------------
 	*/
-	/** return string "GuiName"  OR "GuiName:command"
-	 */
-	_gui($command:="")
-	{
-		return % this._name ( $command ? ":" $command : $command )
-	} 
 	/** @return string "ahk_id hwnd"
 	 */
 	ahkId($hwnd:="")
 	{
 		return % "ahk_id " ( $hwnd ? $hwnd : this._hwnd )
 	}
-	
+	/** return string "GuiName"  OR "GuiName:command"
+	 */
+	_gui($command:="")
+	{
+		return % this._name ( $command ? ":" $command : $command )
+	} 
 	/** contvert boolean to string "+|-"
 	*/
 	_getPlusMinus($toggle)

@@ -103,6 +103,8 @@ Class AddControls Extends GuiControl
 			this.TabsetTabs[$Tab.name()] := new TabControl( $Tab )
 													.TabsManager(this.TabsManager())
 													.addControls()
+
+		this._selectLastTab()
 	}
 
 	/*---------------------------------------
@@ -144,6 +146,11 @@ Class AddControls Extends GuiControl
 					.callback( this._Parent ".loadTabs" )
 					.options("w96 h48")
 					.exit("Exit")
+					
+				;.Button()
+				;	.callback( &this "._TEST" )
+				;	.options("w96 h48")
+				;	.submit("Test")
 
 	}
 
@@ -163,6 +170,14 @@ Class AddControls Extends GuiControl
 	_tooltip( $control_type, $name )
 	{
 		return % this._Tooltips[$control_type][$name]
+	}
+	/**
+	 */
+	_selectLastTab()
+	{
+		IniRead, $last_tab, %$ini_path%, last, tabs, 1
+		
+		this._Tabs.select($last_tab)
 	} 
 
 

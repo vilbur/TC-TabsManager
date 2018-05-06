@@ -15,7 +15,7 @@ Class GuiControl Extends GuiCallback
 	_getActiveTab()
 	{
 		;MsgBox,262144,, GuiControl._getActiveTab(),2 
-		return % this._gui.Tabs_Tabsets.getActive()		
+		return % this._gui.Tabs_Tabsets.getActive()
 	}
 	/*---------------------------------------
 		LISTBOX

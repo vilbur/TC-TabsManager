@@ -52,11 +52,12 @@ Class TabsManager Extends Accessors
 	 */
 	_getAllUniqueFiles()
 	{
-		$unique_files := []
-		For $i, $Tabfiles in this._Tabsets._Tabsets
-			$unique_files.insert($Tabfiles.get("unique_file"))
-		;Dump($unique_files, "unique_files", 1)
-		return % $unique_files 
+		MsgBox,262144,, TabsManager._getAllUniqueFiles() `n unused method,2 
+		;$unique_files := []
+		;For $i, $Tabfiles in this._Tabsets._Tabsets
+		;	$unique_files.insert($Tabfiles.get("unique_file"))
+		;;Dump($unique_files, "unique_files", 1)
+		;return % $unique_files 
 	} 
 
 	/** Load Tabs file or go to target root folder
@@ -97,9 +98,11 @@ Class TabsManager Extends Accessors
 
 		if( this._Gui._getOption("title") )
 			this._TotalCmd._setWindowTitleByTabs($data)
-			
-		;if( this._Gui._getOption("exit_onload") )
-		;	ExitApp
+		
+		this._saveLastTabsetRoot()
+		
+		if( this._Gui._getOption("exit_onload") )
+			ExitApp
 	}
 	
 	/** open *.tab file
@@ -132,6 +135,12 @@ Class TabsManager Extends Accessors
 		Run, %COMMANDER_PATH%\%$process_name% /O /S /L=%$path%
 		exitApp
 	}
+	/**
+	 */
+	_saveLastTabsetRoot()
+	{
+		IniWrite, % this._Gui._getActiveTab().tab_num, %$ini_path%, last, tabs
+	} 
 
 	/** set\get parent class
 	 * @return object parent class
