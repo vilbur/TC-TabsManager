@@ -2,7 +2,8 @@
 */
 #Include %A_LineFile%\..\..\Ahk-Lib\_vendor\VilGui\VilGui.ahk
 #Include %A_LineFile%\..\..\Ahk-Lib\TotalCommander\TcPane\TcPane.ahk
-;#Include %A_LineFile%\..\..\Ahk-Lib\TotalCommander\TcCommandSetter\TcCommand\TcCommand.ahk
+;#Include %A_LineFile%\..\..\Ahk-Lib\TotalCommander\TcCommand\TcCommand.ahk
+#Include %A_LineFile%\..\..\Ahk-Lib\TotalCommander\TcCommandCreator\TcCommandCreator.ahk 
 #Include %A_LineFile%\..\..\Ahk-Lib\TotalCommander\TcTabs\TcTabs.ahk
 
 #Include %A_LineFile%\..\..\Ahk-Lib\MsgBox\MsgBox.ahk

@@ -17,7 +17,8 @@ Class TabsManager Extends Accessors
 		$TabsManager := this
 
 		If ( ! FileExist( $ini_path ))
-			this.install()
+			MsgBox,262144,, Test,2 		
+			;this.install()
 			
 		this._Tabsets.loadTabsets()
 		this._TargetInfo.findCurrentTabset( this._Tabsets )

@@ -2,15 +2,23 @@
 */
 Class Install
 {
+	/**
+	 */
+	__New()
+	{
+		this.createCommands()
+		this.createIniFile()		
+	}
+	
 	
 	createCommands()
 	{
-		new TcCommand()
-			.name("Open")
-			.prefix("TabsManager")
-			.cmd( A_ScriptFullPath )
-			.icon( A_ScriptDir "\Icons\tab-switcher.ico" )			
-			.create()
+		new TcCommandCreator()
+				.name("Open")
+				.prefix("TabsManager")
+				.cmd( A_ScriptFullPath )
+				.icon( A_ScriptDir "\Icons\tab-switcher.ico" )			
+				.create()
 	}
 	
 	/**
