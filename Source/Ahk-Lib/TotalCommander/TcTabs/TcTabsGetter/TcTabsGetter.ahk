@@ -11,7 +11,7 @@ Class TcTabsGetter extends TcCore
 	 */
 	__New()
 	{
-		this._init()
+		this.initCore()
 	}
 	/** Get tabs from both side, or only one
 	 * 

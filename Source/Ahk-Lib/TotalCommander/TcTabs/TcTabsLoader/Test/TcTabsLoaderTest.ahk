@@ -1,6 +1,6 @@
 #SingleInstance force
 
-#Include %A_LineFile%\..\..\..\..\TcCore.ahk
+#Include %A_LineFile%\..\..\..\..\TcCore\TcCore.ahk
 #Include %A_LineFile%\..\..\TcTabsLoader.ahk
 #Include %A_LineFile%\..\..\..\..\TcPane\TcPane.ahk
 

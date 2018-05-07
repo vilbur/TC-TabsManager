@@ -1,52 +1,26 @@
 #SingleInstance force
-
 #Include %A_LineFile%\..\..\TcCommand.ahk
+#Include %A_LineFile%\..\helpers\TcCommandTestCmdCreate.ahk
+/* Call native & user command
+ */
+callCommandsTest()
+{
+    $default_command := "SrcThumbs"
+    $user_command    := "UserTestCommand"
 
-
-
-
-/*---------------------------------------
-	RUN TEST
+	new TcCommand($default_command) ; call command in constructor
+	
+	new TcCommand()
+			.cmd("cm_" $default_command, 1000)			
+			.cmd($user_command, 2000)			
+			.cmd("em_" $user_command, 3000)
+			.call()
+}
+/*--------------------------------------- 
+	RUN TESTS
 -----------------------------------------
 */
+callCommandsTest()
 
 
-
-/* TEST NATIVE TOTAL COMMANDER COMMAND
- */
-;new TcCommand().call("cm_GoToLockedDir")
-;new TcCommand().call("GoToLockedDir")
-
-
-/* TEST USER COMMAND
- */
-global $user_command	:= "TestCommandCalled"
-
-createTestUserCommand()
-
-
-;new TcCommand().call($user_command)
-new TcCommand().call("em_" $user_command)
-
-
-deleteTestUserCommand()
-
-
-
-
-/*---------------------------------------
-	HELPERS FOR TEST
------------------------------------------
-*/
-/**
- */
-createTestUserCommand()
-{
-	IniWrite, % A_ScriptDir "\command-file\command-file.ahk", %Commander_Path%\usercmd.ini, % "em_" $user_command, cmd
-}
-/**
- */
-deleteTestUserCommand()
-{
-	IniDelete, %Commander_Path%\usercmd.ini, % "em_" $user_command
-}
+#Include %A_LineFile%\..\helpers\TcCommandTestCmdDelete.ahk

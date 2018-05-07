@@ -1,86 +1,106 @@
 #Include %A_LineFile%\..\includes.ahk
 
-/** Class TcCommandCreator
+/** Create command in Total Commander
 */
-Class TcCommandCreator
+Class TcCommandCreator extends TcCommanderPath
 {
-	_commander_path	:= ""	
-	_usercmd_ini	:= "" ; save 
+	_shortcut 	:= new TcShortcut()
 	
 	_prefix	:= ""	
-	_name	:= ""
+	_name	:= "" ; name of command WITHOUT PREFIX "em_"
 	_section	:= ""		
 	
 	_cmd	:= ""		
 	_param	:= ""
 	_menu	:= ""	
 	_tooltip	:= ""	
-	_button	:= "%systemroot%\system32\shell32.dll,43"			
+	_button	:= "%systemroot%\system32\shell32.dll,43"
 	
-	/** _setTabsPath
-	 */
-	__New()
+	/**
+	  * @param	string	$name Name of command
+	  */
+	__New($name:="")
 	{
-		$commander_path	= %Commander_Path%	
-		$_usercmd_ini	= %Commander_Path%\usercmd.ini		
-		this._commander_path	:= $commander_path		
-		this._usercmd_ini	:= $_usercmd_ini		
+		this._setCommanderPath()
+		this._setIniFile("usercmd.ini")
+		
+		if( $name )
+			this.name($name)
 	}
-	/** set prefix
-	  * @param	string	$prefix	for commands name, menu and tooltip text
-	 */
+	/** Set prefix for commands name, menu and tooltip text
+	  * @param	string	$prefix	
+	  *
+	  * @return	self
+	  */
 	prefix( $prefix:="" )
 	{
 		this._prefix := $prefix
 		
 		return this		
 	}
-	/**
-	  * @param	string	$name of command
-	 */
+	/** Set name of command
+	  * @param	string	$name Name of command
+	  *
+	  * @return	self
+	  */
 	name( $name )
 	{
-		this._name := $name 
+		this._name := RegExMatch( $name, "^em_" ) ? SubStr( $name, 4 )  : "em_" $name
 		return this 		
 	}
-	/**
+	/** Set of command
 	  * @param	string	$cmd	cmd key in Usercmd.ini
-	 */
+	  *
+	  * @return	self
+	  */
 	cmd( $cmd )
 	{
 		this._cmd := $cmd 
 		return this 		
 	}
-	/**
-	  * @param	string	$params	any numbre of prameters, param key in Usercmd.ini
-	 */
+	/** Set params of command
+	  * @param	string	$params	Any number of parmeters, param key in Usercmd.ini
+	  *
+	  * @return	self
+	  */
 	param( $params* )
 	{
 		this._params 	:= $params
 
 		return this
 	}
-	/**
-	  * @param	string	$menu	menu key in Usercmd.ini
-	 */
+	/** Set menu text of command
+	  * @param	string	$menu	Menu key in Usercmd.ini
+	  *
+	  * @return	self
+	  */
 	menu( $menu )
 	{
 		this._menu := $menu
 		
 		return this 		
-	}	
-	/**
-	  * @param	string	$tooltip	tooltip key in Usercmd.ini
-	 */
+	}
+	
+	/*---------------------------------------
+		ALIASES
+	-----------------------------------------
+	*/
+	/** Set tooltip of command
+	  * @param	string	$tooltip	Menu key in Usercmd.ini
+	  *
+	  * @return	self
+	  */
 	tooltip( $tooltip )
 	{
 		this._tooltip := $tooltip
 		
 		return this 		
 	}
-	/**
+	/** Set Icon of command
 	  * @param	string	$icon	button key in Usercmd.ini
-	 */
+	  *
+	  * @return	self
+	  */
 	icon( $icon )
 	{
 		if( $icon )
@@ -88,8 +108,14 @@ Class TcCommandCreator
 
 		return this 		
 	}
-	/** write command to Usercmd.ini
-	 */
+	/*---------------------------------------
+		COMMAND METHODS
+	-----------------------------------------
+	*/
+	/** Write command to Usercmd.ini
+	  *
+	  * @return	self
+	  */
 	create()
 	{
 		this._setSection()
@@ -104,31 +130,50 @@ Class TcCommandCreator
 		
 		return this
 	}
-	/** delete command from Usercmd.ini
-	 */
+	/** Delete command from Usercmd.ini
+	  *
+	  * @return	self
+	  */
 	delete( )
 	{
 		if( this._name )
 			IniDelete, % this._usercmd_ini, % this._name
 		return this
 	}
-	/**
+	/** Create keyboard shortcut or get TcShortcut if params are empty
+	 *
+	 * @param	string	$keys*	Keys for shortcut
+	 * @return	self|[TcShortcut](/TcShortcut)
 	 */
 	shortcut( $keys* )
 	{
-		if( $keys )
-			return % this._shortcut.keys($keys)
+		if( ! $keys.length() )
+			return this._shortcut
 		
-		return this._shortcut
+		this._shortcut.name(this._getSectionName())
+		
+		this._shortcut.shortcut($keys*)
+		
+		return % this
 	}
+	
+	/*---------------------------------------
+		PRIVATE
+	-----------------------------------------
+	*/
+	/**
+	 */
+	_getSectionName()
+	{
+		$prefix_sanitized	:= RegExReplace( this._prefix, "\s+", "_" )
+		$prefix_name	:= $prefix_sanitized ? $prefix_sanitized "-" : $prefix_sanitized
+		return % "em_" $prefix_name this._getCmdName()
+	} 
 	/**
 	 */
 	_setSection()
 	{
-		$prefix_sanitized	:= RegExReplace( this._prefix, "\s+", "_" )
-		$prefix_name	:= $prefix_sanitized ? $prefix_sanitized "-" : $prefix_sanitized
-		;$cmd_name	:= this._name ? RegExReplace( this._name, "[-\s\\\/]+", "-" ) : this._cmd
-		this._section := "em_" $prefix_name this._getCmdName()
+		this._section := this._getSectionName()
 	} 
 	/**
 	 */
@@ -175,7 +220,7 @@ Class TcCommandCreator
 	 */
 	_getCmdValue()
 	{
-		return this._replaceCommanderPathEnvVariable(this._cmd)
+		return this.pathEnv(this._cmd)
 	}
 	/**
 	 */
@@ -197,21 +242,13 @@ Class TcCommandCreator
 	 */
 	_getButtonValue()
 	{
-		return this._replaceCommanderPathEnvVariable(this._button)
+		return this.pathEnv(this._button)
 	}	
 	/*---------------------------------------
 		HELPERS
 	-----------------------------------------
 	*/
-	
-	/** Replace path to %COMMANDER_PATH% back
-			E.G.: "C:\TotalCommander" >>> "%COMMANDER_PATH%"
-	 */
-	_replaceCommanderPathEnvVariable( $path )
-	{
-		$commander_path_rx := RegExReplace( this._commander_path, "i)[\\\/]+", "\\" )
-		return % RegExReplace( $path, "i)" $commander_path_rx, "%COMMANDER_PATH%" ) 
-	}
+
 	/** escape and quote %T & %P parameter
 	 */
 	_escapeParameter( $param )

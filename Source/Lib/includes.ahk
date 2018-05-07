@@ -22,6 +22,7 @@
 /* GUI
 */
 #Include %A_LineFile%\..\Lib\Gui\Gui.ahk
+#Include %A_LineFile%\..\Lib\Gui\GuiEvents.ahk
 
 /* CONTROLS 
 */

@@ -2,7 +2,7 @@
 
 /** TcCommandSetter
   *
-  * Mass creator for TcCommands
+  * Mass creator for TcCommand
   *
   */
 Class TcCommandSetter
@@ -10,20 +10,22 @@ Class TcCommandSetter
 	_TcCommandCreator 	:= new TcCommandCreator()
 	_commands	:= {} ; definition for commands
 	
-	/** set definition for commands
+	/** Set definition for commands
 	  *
-	  * @param object $commands {"command":	[ "MENU",	"TOOLTIP",	"ICONPATH",	"PARAMETERS"	]}
+	  * @param object $commands {"command": [ "MENU", "TOOLTIP", "ICONPATH", "PARAMETERS" ]}
+	  * @return	self 
 	  */
-	commands( $commands:="" )
+	commands( $commands )
 	{
 		this._commands := $commands
 		
 		return this
 	}
-	/** set prefix
+	/** Set prefix
 	  * @param	string	$prefix	for commands name, menu and tooltip text
-	 */
-	prefix( $prefix:="" )
+	  * @return	self 
+	  */
+	prefix( $prefix )
 	{
 		this._prefix := $prefix
 		
@@ -31,7 +33,7 @@ Class TcCommandSetter
 	} 
 	/** Create all commands
 	 */
-	createCommands()
+	create()
 	{		
 		For $command, $values in this._commands
 			this._TcCommandCreator.clone()

@@ -10,7 +10,7 @@ $commands := {"command-full":["Menu Text", "Tooltip", "%systemroot%\system32\she
 new TcCommandSetter()
 		.prefix($prefix)
 		.commands($commands)
-		.createCommands()
+		.create()
 
 /* RESULT TO COMMANDS:
    

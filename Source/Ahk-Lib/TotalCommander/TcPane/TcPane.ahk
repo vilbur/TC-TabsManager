@@ -21,7 +21,7 @@ Class TcPane extends TcControlClasses
 	 */
 	__New()
 	{
-		this._init()
+		this.initCore()
 		
 		this._setPaneClasses()
 		this._setPathClasses()
@@ -29,9 +29,9 @@ Class TcPane extends TcControlClasses
 		
 		this._setPanes()
 		
-		this._setTcPaneWatcher()		
+		this._setTcPaneWatcher()
+		
 	}
-	
 	/** @return string path of active pane
 	 *	
 	 *	@param string pane 'left|right|source|target'
@@ -57,13 +57,7 @@ Class TcPane extends TcControlClasses
 			return $source_side
 				
 		if( $side!=$source_side )
-		{
-			;$target_class	:= this._getPaneClass("target")
-
-			this._TcPaneWatcher.setactivePane( this._hwnd, this._getPaneClass("target") )
-
-			ControlFocus, , % this._getAhkId( "target" )
-		}
+			this._switchPanes()
 		
 		return this
 	}
@@ -94,7 +88,7 @@ Class TcPane extends TcControlClasses
 		return % $path_control ? $pane_obj.path.hwnd : $pane_obj.hwnd
 	} 
 	/*---------------------------------------
-		GET PPANES DATA
+		GET PANES DATA
 	-----------------------------------------
 	*/
 	/** @return string ClassNN of active pane
@@ -171,7 +165,8 @@ Class TcPane extends TcControlClasses
 	_getControlHwnd( $class_nn )
 	{
 		ControlGet, $hwnd, Hwnd,, %$class_nn%,  % this.ahkId()
-
+		
+		
 		return $hwnd 
 	}
 
@@ -184,14 +179,18 @@ Class TcPane extends TcControlClasses
 	 */  
 	_setTcPaneWatcher()
 	{
-		if( ! this._TcPaneWatcher )
-			try
-			{
-				this._TcPaneWatcher := ComObjActive($CLSID).hwnd(this._hwnd)
-			}
+		;if( ! this._TcPaneWatcher )
+		;	try
+		;	{
+		;		this._TcPaneWatcher := ComObjActive($CLSID).hwnd(this._hwnd)
+		;	}
+		;	catch
+		;	{
+				this._runTcPaneWatcher()
+		;	}
 			
-		if( ! this._TcPaneWatcher )
-			this._runTcPaneWatcher()
+		;if( ! this._TcPaneWatcher )
+			;this._runTcPaneWatcher()
 	}
 	/** Get focused control (file list) when Total commander window lost focus
 	  * 
@@ -200,15 +199,11 @@ Class TcPane extends TcControlClasses
 	{
 		$hwnd := this._hwnd
 		
-		if (InStr( A_ScriptName, ".exe" ) )
-			$watcher_path = %A_ScriptDir%\TcPaneWatcher\TcPaneWatcher.exe
-		else
-			$watcher_path = %A_LineFile%\..\TcPaneWatcher\TcPaneWatcher.ahk
-
-		
-		Run, %$watcher_path% %$hwnd% %$CLSID%
+		Run, %A_LineFile%\..\TcPaneWatcher\TcPaneWatcher.ahk %$hwnd% %$CLSID%
 		sleep, 50
-		this._setTcPaneWatcher()
+		;this._setTcPaneWatcher()
+		this._TcPaneWatcher := ComObjActive($CLSID).hwnd(this._hwnd)
+
 	}
 	/**
 	 */
@@ -230,8 +225,18 @@ Class TcPane extends TcControlClasses
 			if( $pane_class==$pane_class_get )
 				return A_Index == 1 ? "right" : "left"
 	}
+	/*---------------------------------------
+		HELPERS
+	-----------------------------------------
+	*/
+	/**
+	 */
+	_switchPanes()
+	{
+		this._TcPaneWatcher.setactivePane( this._hwnd, this._getPaneClass("target") )
 
-	
+		ControlFocus, , % this._getAhkId( "target" )
+	} 
 	/*---------------------------------------
 		FALLBACKS FOR OBSOLETE METHODS
 	-----------------------------------------
@@ -253,15 +258,16 @@ Class TcPane extends TcControlClasses
 	}
 	getSourcePath()
 	{
-		MsgBox,262144,, % "OBSOLETE METHOD:`n	TcPane.getTargetPaneClass()`n`nCHANGE IT TO:`n	TcPane.getPath('source')"
+		MsgBox,262144,, % "OBSOLETE METHOD:`n	TcPane.getSourcePath()`n`nCHANGE IT TO:`n	TcPane.getPath('source')"
 	}
 	getTargetPath()
 	{
-		MsgBox,262144,, % "OBSOLETE METHOD:`n	TcPane.getTargetPaneClass()`n`nCHANGE IT TO:`n	TcPane.getPath('target')"
+		MsgBox,262144,, % "OBSOLETE METHOD:`n	TcPane.getTargetPath()`n`nCHANGE IT TO:`n	TcPane.getPath('target')"
 	}
 	
-	
 }
+
+
 
 OnExit("KillTcPaneWatcher")
 
@@ -273,4 +279,3 @@ KillTcPaneWatcher(ExitReason, ExitCode)
 	}	
 	
 }
-

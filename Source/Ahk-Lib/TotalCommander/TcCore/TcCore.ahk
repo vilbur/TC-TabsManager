@@ -1,18 +1,19 @@
+#Include %A_LineFile%\..\..\TcCommanderPath\TcCommanderPath.ahk
+
 /* Class TcCore
 */
-Class TcCore
+Class TcCore extends TcCommanderPath
 {
-	_wincmd_ini	:= ""
+	_wincmd_ini	:= ""	
 	_process_name	:= ""	
 	_hwnd	:= ""
 
-	/**
+	/** Init core
+	  9 must be called in __New() mehthod in class which extends TcCore
 	 */
-	_init()
+	initCore()
 	{
-		;$wincmd_ini	= %Commander_Path%\wincmd.ini		
-		;this._wincmd_ini	:= $wincmd_ini
-		
+		this._setCommanderPath()
 		this._setIniFile( "wincmd.ini" )
 		this._setProcessName()
 		this._setHwnd()
@@ -43,24 +44,27 @@ Class TcCore
 		WinGet, $hwnd , ID, ahk_class TTOTAL_CMD
 		this._hwnd := $hwnd
 	}
-	/**
+
+	/*---------------------------------------
+		COMMANDS
+	-----------------------------------------
+	*/
+	/** Command: ConfigSAveSettings
 	 */
 	saveConfig()
 	{
-		SendMessage  1075, 580, 0, , % "ahk_id " this._hwnd
-		
+		SendMessage  1075, 580, 0, , % this.ahkId()
 		return this
 	}
-	/** Set ini file as property
-	 *  
-	 *  @param	string	$ini_file	filename to set E.G.: "wincmd.ini" WILL BE this._wincmd_ini
+	/** Command: RereadSource
 	 */
-	_setIniFile( $ini_file )
+	refresh()
 	{
-		$ini_file_path	= %Commander_Path%\%$ini_file%
-		
-		this["_" RegExReplace( $ini_file, "\.", "_" )] := $ini_file_path
-	}  
+		SendMessage  1075, 540, 0, , % this.ahkId()
+		return this
+	}
+	
+	
 	
 
 }

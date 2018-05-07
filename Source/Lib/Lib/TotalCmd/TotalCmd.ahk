@@ -24,7 +24,9 @@ Class TotalCmd Extends Parent
 	 */
 	getDir($pane:="source")
 	{
-		$path := $pane=="source" ? this._TcPane.getSourcePath() : this._TcPane.getTargetPath()
+		;$path := $pane=="source" ? this._TcPane.getSourcePath() : this._TcPane.getTargetPath()
+		$path := this._TcPane.getPath( $pane )
+		;$path := this._TcPane.getPath( $pane =="source"?"source":"target" )			
 		
 		SplitPath, $path, $dir_name
 

@@ -1,92 +1,117 @@
-/** Class TCcommand
-*/
-Class TCcommand
+#Include %A_LineFile%\..\includes.ahk
+/** Call default and custom command in Total Commander
+ *
+ * Custom command is send via clipboard to command line in Total Commander 
+ *
+ */
+Class TcCommand extends TcCore
 {
-	_process_name	:= ""
-	_hwnd	:= ""
+	_usercmd_ini	:= "" 
+	_totalcmd_inc	:= ""
 	
 	_command_line	:= ""
-	_codes_ini	:= "" ; save 	
+	_commands	:= []
 	
-	_cmd	:= ""	; command name
-	_CM	:= 0 	; command code
-	_EM	:= false	; is user command
-	
-	/** _setTabsPath
+	/** 
+	  * @param	string	$cmd	Command name
+	  * @param	int	$wait	Wait before call
 	 */
-	__New()
+	__New($cmd:="", $wait:=0)
 	{
-		this._setProcessName()
-		this._setHwnd()
+		this.keyDelay(50,10)
+		
+		this.initCore()
+
 		this._setCommandLineControl()		
 		
-		$_usercmd_ini	= %Commander_Path%\usercmd.ini
-		this._usercmd_ini	:= $_usercmd_ini
-		
-		$_codes_ini	= %Commander_Path%\TOTALCMD.INC				
-		this._codes_ini	:= $_codes_ini
-	}
-	/**
-	 */
-	call( $cmd, $wait:=0 )
-	{
-		this._cmd := $cmd		
-		
-		this._findDefaultCommand()
+		this._setIniFile("usercmd.ini")
+		this._setIniFile("TOTALCMD.INC")
 
-		if( ! this._CM )
-			this._findUserCommand()
+		if( $cmd )
+			this.cmd( $cmd, $wait ).call()
+	}
+	
+	/** Set command
+	  * @param	string	$cmd	Command name
+	  * @param	int	$wait	Wait before call
+	  *
+	  * @return	self
+	 */
+	cmd( $cmd, $wait:=0 )
+	{
+		$command := this._findDefaultCommand($cmd)
 		
-		this._wait($wait)
+		if( ! $command )
+			$command := this._findUserCommand($cmd)
+				
+		if( $command )
+			this._commands.push([$command, $wait])
 		
-		if( this._CM )
-			this._callDefaultCommand()
-			
-		else if( this._EM )
-			this._calllUserCommand()
-			
 		return this
 	}
+	/** Call commands
+	  *
+	  * @return	self
+	 */
+	call()
+	{ 
+		For $c, $command_data in this._commands
+		{
+			$method := RegExMatch( $command_data[1], "i)\d+" ) ? "_callDefaultCommand" : "_calllUserCommand"
+			this[$method]( $command_data[1], $command_data[2] )
+		}
 
+		return this
+	}
+	/** Set key dealy for calling user commands
+	  *
+	  * Default is SetKeyDelay, 50, 10
+	 */
+	keyDelay($delay, $press_duration)
+	{
+		SetKeyDelay, %$delay%, %$press_duration%
+	}
+	
 	/**
 	 */
-	_findDefaultCommand()
+	_findDefaultCommand($cmd)
 	{
-		if( InStr( this._cmd, "em_" ) )
+		if( InStr( $cmd, "em_" ) )
 			return 
 		
-		$cmd_search := InStr( this._cmd, "cm_" )? this._cmd : "cm_" this._cmd
+		$cmd_search := InStr( $cmd, "cm_" )? $cmd : "cm_" $cmd
 		
-		loop Read, % this._codes_ini
+		loop Read, % this._totalcmd_inc
 			if( InStr(A_LoopReadLine, $cmd_search) )
-			{
-				this._CM := RegExReplace( A_LoopReadLine, "^[^=]+=(\d+).*", "$1" )
-				break			
-			}
+				return % RegExReplace( A_LoopReadLine, "^[^=]+=(\d+).*", "$1" )
 	}
 	/**
 	 */
-	_findUserCommand()
+	_findUserCommand($cmd)
 	{
-		$cmd_search := InStr( this._cmd, "em_" )? this._cmd : "em_" this._cmd
+		$cmd_search := InStr( $cmd, "em_" )? $cmd : "em_" $cmd
 		
 		IniRead, $command_found, % this._usercmd_ini, %$cmd_search%
 		
-		this._EM := $command_found!="ERROR" ? true : false
+		return % $command_found!="ERROR" ? $cmd_search : false
 	}
+	
 	/**
 	 */
-	_callDefaultCommand()
-	{			
-		SendMessage  1075, this._CM, 0, , ahk_class TTOTAL_CMD
+	_callDefaultCommand($command, $wait)
+	{
+		this._wait($wait)
+		;MsgBox,262144,, Default command ,1 
+		SendMessage  1075, %$command%, 0, , % this.ahkId()
 	} 
 	/**
 	 */
-	_calllUserCommand()
+	_calllUserCommand($command, $wait)
 	{
 		this._focusCommandLine()
-		this._sendCommand()
-		this._fireCommand()		
+		this._wait($wait)
+		;MsgBox,262144,, User command ,1 
+		this._sendCommand($command)
 	}
 	/**
 	 */
@@ -95,59 +120,42 @@ Class TCcommand
 		if( $wait )
 			sleep, %$wait%
 	}
-	
+
 	/*---------------------------------------
-		INIT
-	-----------------------------------------
-	*/
-	/**
-	 */
-	_setProcessName()
-	{
-		WinGet, $process_name , ProcessName, ahk_class TTOTAL_CMD
-		this._process_name := $process_name
-	}
-	/**
-	 */
-	_setHwnd()
-	{
-		WinGet, $hwnd , ID, ahk_class TTOTAL_CMD
-		this._hwnd := $hwnd
-	}
-	/*---------------------------------------
-		Total commander command line
+		Total commander command line control
 	-----------------------------------------
 	*/
 	/**
 	 */
 	_setCommandLineControl()
 	{
-		this._command_line := this._process_name == "TOTALCMD.EXE" ? "Edit1" : "Edit2"
+		this._command_line := this.processName() == "TOTALCMD.EXE" ? "Edit1" : "Edit2"
 	} 
 	/**
 	 */
 	_focusCommandLine()
 	{
-		ControlFocus, % this._command_line, % "ahk_id " this._hwnd
-	} 
-	/**
+		ControlFocus, % this._command_line, % this.ahkId()
+	}
+	/*---------------------------------------
+		SEND COMMAND 
+	-----------------------------------------
+	*/
+	/** Custom command is send via clipboard to command line in Total Commander 
 	 */
-	_sendCommand()
+	_sendCommand($command)
 	{
-		$user_cmd	:= InStr( this._cmd, "em_" )? this._cmd : "em_" this._cmd
 		$BackUpClip 	:= ClipboardAll ; ClipboardAll must be on its own line
-		Clipboard	:= $user_cmd
-		
-		ClipWait, 10
-		SendInput, ^v
+		Clipboard	= %$command%
+
+		ClipWait
+
+		;ControlSend, % this._command_line, {Ctrl down}v{Ctrl up}{Enter}, % this.ahkId()
+		ControlSend, % this._command_line, {Ctrl down}v{Ctrl up}, % this.ahkId()		
+		ControlSend, % this._command_line, {Enter}, % this.ahkId()				
+
 		Clipboard := $BackUpClip
 	}
-	/**
-	 */
-	_fireCommand()
-	{
-		ControlSend, % this._command_line, {Enter}, % "ahk_id " this._hwnd
-	} 
 
  
 }

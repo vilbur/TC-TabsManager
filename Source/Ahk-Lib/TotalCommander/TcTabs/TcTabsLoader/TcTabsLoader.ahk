@@ -12,7 +12,7 @@ Class TcTabsLoader extends TcCore
 	 */
 	__New()
 	{
-		this._init()
+		this.initCore()
 		this._setIniFile( "usercmd.ini" )		
 	}
 	/** load tabs file
@@ -109,7 +109,7 @@ Class TcTabsLoader extends TcCore
 	createCommandRunTabSwitcher()
 	{
 		$param := """%P\""" ; "
-		IniWrite, % A_ScriptDir "\TabsManager.ahk",	% this._usercmd_ini, % this._cmd_run_tabswitcher, cmd
+		IniWrite, % A_ScriptDir "\TabsSwitcher.ahk",	% this._usercmd_ini, % this._cmd_run_tabswitcher, cmd
 		IniWrite, %$param%,	% this._usercmd_ini, % this._cmd_run_tabswitcher, param		
 	}
 	/*---------------------------------------
@@ -178,7 +178,7 @@ Class TcTabsLoader extends TcCore
 		
 		WinWait, ahk_class TTOTAL_CMD,,2
 		
-		this._init()
+		this.initCore()
 	}  
 	
 

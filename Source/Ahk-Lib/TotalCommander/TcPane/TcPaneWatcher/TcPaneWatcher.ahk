@@ -1,10 +1,7 @@
 #SingleInstance force
 #NoTrayIcon
 
-#Include %A_LineFile%\..\..\..\TcActivate\TcActivate.ahk 
-
 global $TcPaneWatcher
-global $last_win
 global $CLSID
 
 /** Watch Total Commander and get source pane every time Total commander lost focus
@@ -22,23 +19,19 @@ global $CLSID
 Class TcPaneWatcher
 {
 	_active_panes	:= {}
-	_TcActivate	:= new TcActivate()
+	_hwnd_msg	:= 0
 
-	__New()
-	{
-		this._setOnWinMessage()
-	}
 	/** Set hwnd for identification of Total Commander
 	 *		
 	 *	@param	integer	$hwnd	hwnd of Total Commander 
 	 */
 	hwnd( $hwnd_tc )
 	{
+		this._registerMessage()
+
 		this._active_panes[$hwnd_tc]	:= ""
 		
-		;this._TcActivate.hwnd(this._hwnd)
-
-		this._initActivePane( $hwnd_tc )
+		this.initCoreActivePane( $hwnd_tc )
 		
 		return this
 	}
@@ -52,7 +45,7 @@ Class TcPaneWatcher
 	{
 		if( ! $source_pane )
 			ControlGetFocus, $source_pane, ahk_id %$hwnd_tc%
-		;MsgBox,262144,source_pane, %$source_pane%,3
+
 		if( this._isFileListControl( $source_pane ) )
 			this._active_panes[$hwnd_tc] := $source_pane
 	}
@@ -71,7 +64,7 @@ Class TcPaneWatcher
 	}
 	/**
 	 */
-	_initActivePane( $hwnd_tc )
+	initCoreActivePane( $hwnd_tc )
 	{
 		$last_win := $hwnd_tc
 		
@@ -80,27 +73,29 @@ Class TcPaneWatcher
 	} 
 	/** Set callback on focus change
 	 */
-	_setOnWinMessage()
+	_registerMessage()
 	{
 		Gui +LastFound
-		$hwnd := WinExist()
+		this._hwnd_msg := WinExist()
 		
-		DllCall( "RegisterShellHookWindow", UInt,$hwnd )
+		DllCall( "RegisterShellHookWindow", UInt,this._hwnd_msg )
 		$MsgNum := DllCall( "RegisterWindowMessage", Str,"SHELLHOOK" )
 		OnMessage( $MsgNum, "onWindowChange" )
 			
 		return this
 	}
+	/**
+	 */
+	_deregisterMessage()
+	{
+		DllCall( "DeregisterShellHookWindow", "PTR", this._hwnd_msg )
+	} 
 	/** Set last used control on Total Commander lost focus
 	  * Called by onWindowChange()
 	  */
 	_onTotalCommanderLostFocus( $hwnd_tc )
 	{
-		this._TcActivate.activate($hwnd_tc)
-		
 		this.setActivePane( $hwnd_tc )
-				
-		this._TcActivate.deactivate($hwnd_tc)
 	}
 
 	/** Make sure that last control was list box
@@ -111,60 +106,27 @@ Class TcPaneWatcher
 	} 
 	
 }
-/*---------------------------------------
-	CALLBACK
------------------------------------------
-*/
 
 /** On Total Commander Get\Lost focus
  */
 onWindowChange(wParam, lParam)
-{
+{	
 	if(  wParam!=32772 )
-		return
-		
-	WinGetClass, $last_class, ahk_id %$last_win%
-		
-	if( $last_class == "TTOTAL_CMD" )
-	{
-		;MsgBox,262144,, Lost Focus,2 
-		$TcPaneWatcher._onTotalCommanderLostFocus( $last_win )
-		
-		$last_win := ""
-	}
+		return	
 	
 	WinGetClass, $win_class, ahk_id %lParam%
+
+	if( $win_class == "TTOTAL_CMD" )
+				
+		SetTimer, WatchPane, 200
+		
+	 else 
+		SetTimer, WatchPane, Off
 	
-	if( $win_class=="TTOTAL_CMD" )
-		$last_win := lParam		
 }
 
-/*---------------------------------------
-	REGISTER COM OBJECT
------------------------------------------
-*/
-
 /*
-    ObjRegisterActive(Object, CLSID, Flags:=0)
-    
-        Registers an object as the active object for a given class ID.
-        Requires AutoHotkey v1.1.17+; may crash earlier versions.
-    
-    Object:
-            Any AutoHotkey object.
-    CLSID:
-            A GUID or ProgID of your own making.
-            Pass an empty string to revoke (unregister) the object.
-    Flags:
-            One of the following values:
-              0 (ACTIVEOBJECT_STRONG)
-              1 (ACTIVEOBJECT_WEAK)
-            Defaults to 0.
-    
-    Related:
-        http://goo.gl/KJS4Dp - RegisterActiveObject
-        http://goo.gl/no6XAS - ProgID
-        http://goo.gl/obfmDc - CreateGUID()
+
 */
 registerTcPane(Object, CLSID, Flags:=0)
 {
@@ -193,6 +155,21 @@ registerTcPane(Object, CLSID, Flags:=0)
 $hwnd	= %1%
 $CLSID	= %2%
 
-$TcPaneWatcher := new TcPaneWatcher().hwnd($hwnd)
+registerTcPane(TcPaneWatcher, $CLSID)
 
-registerTcPane($TcPaneWatcher, $CLSID)
+$TcPaneWatcher := ComObjActive($CLSID)
+
+$TcPaneWatcher.hwnd($hwnd)
+
+return 
+
+
+WatchPane:
+
+WinGetClass, $win_class, A
+
+if( $win_class=="TTOTAL_CMD" )
+	$TcPaneWatcher.setActivePane( WinExist("A") )
+
+return
+

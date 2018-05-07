@@ -33,7 +33,6 @@ Class GuiCallbackMethods Extends Parent
 		if( $Tabfile )
 		{
 			$active_pane	:= this.TotalCmd().activePane()
-			
 			$tabs	:= $Tabfile.getTabsCaptions()
 			
 			this._gui.Controls.get("TEXT_pane_" $active_pane).edit( $tabs.activetabs )
