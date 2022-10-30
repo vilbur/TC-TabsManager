@@ -38,6 +38,7 @@ Class TabsManager Extends Accessors
 
 		this._Gui.createGui()
 	}
+	
 	/**
 	 */
 	install()
@@ -48,6 +49,7 @@ Class TabsManager Extends Accessors
 				.createIniFile()						
 				.createTabsFolder()
 	}
+	
 	/** get all unique files from all ini files
 	 */
 	_getAllUniqueFiles()
@@ -68,11 +70,23 @@ Class TabsManager Extends Accessors
 	  */
 	loadTabs($tabset:="", $tabsgroup:="", $tabfile:="")
 	{
+		;MsgBox,262144,tabset, %$tabset%,3 
+		;MsgBox,262144,tabsgroup, %$tabsgroup%,3 
+		;MsgBox,262144,tabfile, %$tabfile%,3 
+		
 		$data	:= this._getData( $tabset, $tabsgroup, $tabfile )
 		$Tabset	:= this.Tabset($data)
 		$path_tab_file	:= this.Tabfile($data).getPath()
 		$target_folder	:= $data.folder ? $data.folder : this.TargetInfo().get( "folder_current" )
+		
+		;MsgBox,262144,data.tabsetroot, % $data.tabsetroot,3 
+		;MsgBox,262144,data.tabset, % $data.tabset,3 
+		;MsgBox,262144,data.tabsgroup, % $data.tabsgroup,3 
+		;MsgBox,262144,data.tabfile, % $data.tabfile,3
+		
+		;MsgBox,262144,path_tab_file, %$path_tab_file%
 
+		
 		/* GO TO PATH
 		*/
 		;if( $tabfile && ! $Tabset.isPathInTarget( A_WorkingDir ) )
@@ -88,8 +102,7 @@ Class TabsManager Extends Accessors
 					.searchFolders( $Tabset.getTabsRootFoldersAll()  )
 					.replaceFolder( $data.folder )
 					.replace( $data.replace )
-		
-		
+				
 		this.Tabset($data).saveLastToIni( $data )
 		
 		/* LOAD TAB FILE
@@ -115,18 +128,20 @@ Class TabsManager Extends Accessors
 		
 		Run, Notepad++ %$path_tab_file%
 	}
+	
 	/** get data object from gui or params
 	 */
 	_getData( $tabset:="", $tabsgroup:="", $tabfile:="" )
 	{
-		;if( ! $tabset && ! $tabsgroup && ! $tabfile )
+		if( ! $tabset && ! $tabsgroup && ! $tabfile )
 			return % this._gui._getGuiData()
 	
-		;return %	{"tabsetroot":	$tabset
-		;	,"tabset":	$tabset
-		;	,"tabsgroup":	$tabsgroup
-		;	,"tabfile":	$tabfile}
+		return %	{"tabsetroot":	$tabset
+			,"tabset":	$tabset
+			,"tabsgroup":	$tabsgroup
+			,"tabfile":	$tabfile}
 	}
+	
 	/**
 	 */
 	_goToTargetRoot( $path )
@@ -135,6 +150,7 @@ Class TabsManager Extends Accessors
 		Run, %COMMANDER_PATH%\%$process_name% /O /S /L=%$path%
 		exitApp
 	}
+	
 	/**
 	 */
 	_saveLastTabsetRoot()

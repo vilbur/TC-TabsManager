@@ -56,6 +56,7 @@ Class Gui Extends GuiEvents
 		;WinHide, % this._gui.ahkId()
 		;WinShow, % this._gui.ahkId()
 	}
+	
 	/**
 	 */
 	_setMargin()
@@ -107,6 +108,7 @@ Class Gui Extends GuiEvents
 		
 		return $form_data
 	}
+	
 	/**
 	 */
 	saveWindowPosition($Event, $params*)
@@ -122,6 +124,7 @@ Class Gui Extends GuiEvents
 		IniWrite, % $Event.height,	%$ini_path%, window, height						
 		
 	}
+	
 	/**
 	 */
 	_getWindowIniPosition($xy)
@@ -130,6 +133,7 @@ Class Gui Extends GuiEvents
 		
 		return $value 
 	}
+	
 	;/*---------------------------------------
 	;	EVENTS
 	;-----------------------------------------
@@ -203,6 +207,7 @@ Class Gui Extends GuiEvents
 	{
 		this._gui.gui("Font",  $size " " $color )
 	}
+	
 	/**
 	 */
 	_resetFont()

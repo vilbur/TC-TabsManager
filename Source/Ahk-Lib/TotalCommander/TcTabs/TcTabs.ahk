@@ -17,6 +17,7 @@ Class TcTabs
 	{
 		return % this._TcTabsGetter.getTabs($side)
 	}
+	
 	/** Save tabs file
 	 *		
 	 * @param	string	$tab_file_path	path to *.tab file
@@ -33,6 +34,7 @@ Class TcTabs
 		FileDelete, %$tab_file_path% 
 		FileAppend, %$tabs%, %$tab_file_path% 
 	}
+	
 	/** Load tabs file
 	 *		
 	 * @param	string	$tab_file_path	path to *.tab file
@@ -40,9 +42,9 @@ Class TcTabs
 	 */
 	load( $tab_file_path, $side:="" )
 	{
+		;MsgBox,262144,tab_file_path, %$tab_file_path%,3 
 		this._TcTabsLoader.load( $tab_file_path, $side )
 	}
-
 	
 	/**
 	 */

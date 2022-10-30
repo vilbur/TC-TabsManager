@@ -20,6 +20,7 @@ Class TotalCmd Extends Parent
 	{
 		return % this._TcPane.activePane($side)
 	}
+	
 	/**
 	 */
 	getDir($pane:="source")
@@ -46,6 +47,7 @@ Class TotalCmd Extends Parent
 		
 		return % this.stringifyTabs($tabs) "activetab=" $tabs.activetab
 	}
+	
 	/**
 	 */
 	stringifyTabs($tabs)
@@ -80,20 +82,3 @@ Class TotalCmd Extends Parent
 		WinSetTitle, % this._TcPane.ahkId(),, %$title%
 	} 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,10 @@
-/** TcTabsLoader
- *
+/** TcTabsLoader can load .*tab file into commander
+ *  It`s done via workaround with custom command
+ * 
+ * 	1) Extended command "em_TcTabsLoader_load-tabs" is created in "usercmd.ini"
+ * 	2) Ctrl+Shift+Alt+F9 is associated with this command 
+ * 	3) Keyboard shortcut is send to Total Commander and tab file is loaded
+ * 
  */
 Class TcTabsLoader extends TcCore
 {
@@ -104,6 +109,7 @@ Class TcTabsLoader extends TcCore
 	{
 		IniWrite, %$open_tabs_cmd%, % this._usercmd_ini, % this._cmd_name, cmd
 	}
+	
 	/** create command in wincmd.ini
 	 */
 	createCommandRunTabSwitcher()
@@ -112,6 +118,7 @@ Class TcTabsLoader extends TcCore
 		IniWrite, % A_ScriptDir "\TabsSwitcher.ahk",	% this._usercmd_ini, % this._cmd_run_tabswitcher, cmd
 		IniWrite, %$param%,	% this._usercmd_ini, % this._cmd_run_tabswitcher, param		
 	}
+	
 	/*---------------------------------------
 		SHORTCUT
 	-----------------------------------------
@@ -125,6 +132,7 @@ Class TcTabsLoader extends TcCore
 		$keyboard_shortcut :=  ; Ctrl + alt + Shift
 		this._setShortcutToIni( "ShortcutsWin", "CAS+F9", this._cmd_name )
 	}
+	
 	/**
 	  create command in Usercmd.ini
 	 */
@@ -132,6 +140,7 @@ Class TcTabsLoader extends TcCore
 	{
 		IniWrite, %$value%, % this._wincmd_ini, %$section%, %$key%
 	}
+	
 	/**
 		https://autohotkey.com/docs/commands/WinExist.htm#function
 	 */
@@ -139,6 +148,7 @@ Class TcTabsLoader extends TcCore
 	{
 		ControlSend,, {LWin down}{Ctrl down}{Alt down}{Shift down}{F9}{LWin up}{Ctrl up}{Alt up}{Shift up}, % this.ahkId()
 	}
+	
 	/*---------------------------------------
 		FIRST TIME EXECUTION
 	-----------------------------------------
@@ -150,7 +160,8 @@ Class TcTabsLoader extends TcCore
 		IniRead, $command_exists, % this._usercmd_ini, % this._cmd_name, cmd, 0
 		
 		this._command_exists
-	} 
+	}
+	
 	/** Total Commander needs restart, if command does not exists yet
 	 */
 	_restartCommanderIfFirstTimeLoad()
