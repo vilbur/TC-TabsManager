@@ -23,19 +23,41 @@
 */ 
 
 
-#Include %A_LineFile%\..\Lib\TabsManager.ahk
 
 $tabset	= %1%
 $tabsgroup	= %2%
 $tabfile	= %3% 
 
+$startCommander	= %4% 
+
+if( $startCommander )
+{
+	;Run totalcmd.exe
+	Run *RunAs TOTALCMD64.exe
+	
+	sleep 1000
+	
+	
+	WinActivate, ahk_exe TOTALCMD64.exe; Use the window found by WinExist.
+
+}
+
+#Include %A_LineFile%\..\Lib\TabsManager.ahk
+
+
+	
 $TabsManager 	:= new TabsManager()
 
 
+
 if( $tabset && $tabsgroup && $tabfile )
+{
+	
 	$TabsManager.loadTabs( $tabset, $tabsgroup, $tabfile )
+}
 	
 else
 	$TabsManager.createGui()
 	
 	
+

@@ -17,7 +17,7 @@ Class TabsManager Extends Accessors
 		$TabsManager := this
 
 		If ( ! FileExist( $ini_path ))
-			MsgBox,262144,, Test,2 		
+			MsgBox,262144,, TabsManager ini does not exists,2 		
 			;this.install()
 			
 		this._Tabsets.loadTabsets()
@@ -85,6 +85,8 @@ Class TabsManager Extends Accessors
 		;MsgBox,262144,data.tabfile, % $data.tabfile,3
 		
 		;MsgBox,262144,path_tab_file, %$path_tab_file%
+		
+		;MsgBox,% this._Gui._getOption("title")
 
 		
 		/* GO TO PATH
@@ -109,8 +111,13 @@ Class TabsManager Extends Accessors
 		*/
 		this._TotalCmd._TcTabs.load( $path_tab_file, this._Gui._getOption("active_pane") )		
 
+		
+		/* SHOW TITLE BY TABS NAME
+			
+		*/
 		if( this._Gui._getOption("title") )
 			this._TotalCmd._setWindowTitleByTabs($data)
+		
 		
 		this._saveLastTabsetRoot()
 		

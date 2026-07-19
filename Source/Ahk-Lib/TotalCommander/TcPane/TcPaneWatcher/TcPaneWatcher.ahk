@@ -8,13 +8,13 @@ global $CLSID
  *
  *	Script has own file because of it use OnMessage(), in this way OnMessage does not collide with others OnMessages
  *	TcPaneWatcher is accesable via ComObject
- * 
+ *
  * @param	{hwnd:control_class}	_active_panes	store last used control class, key is hwnd of Total Commander (for use on multiple instances)
  *
- * @method	self	hwnd( integer $hwnd  )	
- * @method	string	activePane( integer $hwnd )	get last focused control class 
+ * @method	self	hwnd( integer $hwnd  )
+ * @method	string	activePane( integer $hwnd )	get last focused control class
  * @method	void	exit()	exit script
- *       
+ *
  */
 Class TcPaneWatcher
 {
@@ -22,24 +22,24 @@ Class TcPaneWatcher
 	_hwnd_msg	:= 0
 
 	/** Set hwnd for identification of Total Commander
-	 *		
-	 *	@param	integer	$hwnd	hwnd of Total Commander 
+	 *
+	 *	@param	integer	$hwnd	hwnd of Total Commander
 	 */
 	hwnd( $hwnd_tc )
 	{
 		this._registerMessage()
 
 		this._active_panes[$hwnd_tc]	:= ""
-		
+
 		this.initCoreActivePane( $hwnd_tc )
-		
+
 		return this
 	}
 	/** Set last used control
 	 *
 	 * 	@param	integer	$hwnd	hwnd of Total Commander
 	 * 	@param	string	$source_pane	ClassNN of source pane
-	 * 
+	 *
 	 */
 	setActivePane( $hwnd_tc, $source_pane:="" )
 	{
@@ -50,7 +50,7 @@ Class TcPaneWatcher
 			this._active_panes[$hwnd_tc] := $source_pane
 	}
 	/** Get last focused pane
-	  * @param	integer	$hwnd	hwnd of Total Commander 
+	  * @param	integer	$hwnd	hwnd of Total Commander
 	 */
 	activePane( $hwnd_tc )
 	{
@@ -67,21 +67,21 @@ Class TcPaneWatcher
 	initCoreActivePane( $hwnd_tc )
 	{
 		$last_win := $hwnd_tc
-		
+
 		if( WinActive("ahk_id " $hwnd_tc) )
 			this.setActivePane( $hwnd_tc )
-	} 
+	}
 	/** Set callback on focus change
 	 */
 	_registerMessage()
 	{
 		Gui +LastFound
 		this._hwnd_msg := WinExist()
-		
+
 		DllCall( "RegisterShellHookWindow", UInt,this._hwnd_msg )
 		$MsgNum := DllCall( "RegisterWindowMessage", Str,"SHELLHOOK" )
 		OnMessage( $MsgNum, "onWindowChange" )
-			
+
 		return this
 	}
 	/**
@@ -89,7 +89,7 @@ Class TcPaneWatcher
 	_deregisterMessage()
 	{
 		DllCall( "DeregisterShellHookWindow", "PTR", this._hwnd_msg )
-	} 
+	}
 	/** Set last used control on Total Commander lost focus
 	  * Called by onWindowChange()
 	  */
@@ -102,27 +102,27 @@ Class TcPaneWatcher
 	 */
 	_isFileListControl( $control_class )
 	{
-		return % RegExMatch( $control_class, "LCLListBox|TMyListBox" ) 
-	} 
-	
+		return % RegExMatch( $control_class, "LCLListBox|TMyListBox" )
+	}
+
 }
 
 /** On Total Commander Get\Lost focus
  */
 onWindowChange(wParam, lParam)
-{	
+{
 	if(  wParam!=32772 )
-		return	
-	
+		return
+
 	WinGetClass, $win_class, ahk_id %lParam%
 
 	if( $win_class == "TTOTAL_CMD" )
-				
+
 		SetTimer, WatchPane, 200
-		
-	 else 
+
+	 else
 		SetTimer, WatchPane, Off
-	
+
 }
 
 /*
@@ -161,7 +161,7 @@ $TcPaneWatcher := ComObjActive($CLSID)
 
 $TcPaneWatcher.hwnd($hwnd)
 
-return 
+return
 
 
 WatchPane:
@@ -172,4 +172,3 @@ if( $win_class=="TTOTAL_CMD" )
 	$TcPaneWatcher.setActivePane( WinExist("A") )
 
 return
-

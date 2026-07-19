@@ -9,8 +9,8 @@ Class GuiEvents Extends AddControls
 	{
 		this._bindKeyEvents()
 		this._bindGuiEvents()
-		this._bindControlEvents()				
-		this._bindWindowEvents()		
+		this._bindControlEvents()
+		this._bindWindowEvents()
 	}
 	/**
 	 */
@@ -23,14 +23,14 @@ Class GuiEvents Extends AddControls
 				.on( "number", &this "._TAB_SelectByNumber")
 				.on( "space", &this "._LB_FoldersAndTabfile", "LB_Folder")
 				.on( ["control", "space"], &this "._LB_ToggleRootsAndTabset", "LB_Folder")
-	} 
+	}
 	/**
 	 */
 	_bindGuiEvents()
 	{
 		this._gui.Events.Gui
 				;.onClose("exit")
-				.onClose( &this ".TestEvent")		
+				.onClose( &this ".TestEvent" )
 				
 		;this._gui.Events.Gui
 		;		.onExit( &this ".saveWindowPosition")
@@ -49,16 +49,14 @@ Class GuiEvents Extends AddControls
 		this._gui.Style.Color
 				.focus( 0x00FF00, 0xFF0080)
 				.focus( "d0e3f4", "", "listbox")
-	} 
+	}
 	/**
 	 */
 	_bindWindowEvents()
 	{
 		this._gui.Events.Window
-		    .on("focus",	&this "._guiFocused")			
+		    .on("focus",	&this "._guiFocused")
 		    ;;.on("sizedmoved",	&this ".saveWindowPosition")
-	} 
+	}
 
 }
-
-

@@ -30,14 +30,22 @@ Class TcTabsLoader extends TcCore
 		if( ! FileExist($tab_file_path) )
 			return
 		
+		
 		if( $side )
 			 $tab_file_path := this._correntSidesOfTabs( $tab_file_path, $side )
 		
+		
+		
 		this._setCommandExistsTest()
+		
 		this._editCommandLoadTabs("OPENTABS """ $tab_file_path """")
+		
 		sleep, 100
+		
 		this._createShortcut()
+		
 		this._restartCommanderIfFirstTimeLoad()
+		
 		this._executeShortcut()
 	}
 	/*---------------------------------------
